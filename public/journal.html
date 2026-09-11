@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINGERS++ | The Journey</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: '#09090B',
+            foreground: '#FAFAFA',
+            muted: '#27272A',
+            'muted-foreground': '#A1A1AA',
+            accent: '#DFE104',
+            'accent-foreground': '#000000',
+            border: '#3F3F46',
+          },
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #09090B;
+      color: #FAFAFA;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .noise-bg::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.03;
+      background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    }
+    .brutal-border {
+      border: 2px dashed #3F3F46;
+      border-radius: 0;
+      box-shadow: 4px 4px 0 rgba(223, 225, 4, 0.1);
+    }
+    .timeline-node {
+      position: relative;
+    }
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 0;
+      bottom: -32px;
+      width: 2px;
+      background-color: #3F3F46;
+      border-left: 2px dashed #3F3F46;
+    }
+    .timeline-node:last-child::before {
+      display: none;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -31px;
+      top: 24px;
+      width: 16px;
+      height: 16px;
+      background-color: #DFE104;
+      border: 4px solid #09090B;
+      z-index: 10;
+    }
+    .inline-img {
+      width: 100%;
+      height: auto;
+      border: 2px dashed #3F3F46;
+      margin-top: 1.5rem;
+      filter: grayscale(80%);
+      transition: filter 0.3s;
+    }
+    .inline-img:hover {
+      filter: grayscale(0%);
+    }
+    
+    /* Hand-drawn Stamp / Polaroid Frame */
+    .stamp-frame {
+      background-color: #FAFAFA;
+      padding: 10px 10px 30px 10px;
+      border: 2px solid #3F3F46;
+      border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px; 
+      box-shadow: 8px 8px 0 rgba(223, 225, 4, 0.2);
+      position: absolute;
+      z-index: 5;
+      transition: all 0.2s ease-in-out;
+      transform-origin: center;
+    }
+    .stamp-frame:hover {
+      z-index: 50;
+      transform: scale(1.1) rotate(0deg) !important;
+      box-shadow: 12px 12px 0 rgba(223, 225, 4, 1);
+    }
+    .stamp-img {
+      width: 220px;
+      height: auto;
+      display: block;
+      border: 1px solid #ddd;
+      filter: grayscale(100%) contrast(120%);
+      transition: filter 0.2s;
+    }
+    .stamp-frame:hover .stamp-img {
+      filter: none;
+    }
+
+    .stamp-1 { top: -20px; right: -150px; transform: rotate(8deg); }
+    .stamp-2 { top: 40px; right: -200px; transform: rotate(-5deg); }
+    .stamp-3 { top: -10px; left: -250px; transform: rotate(-12deg); }
+    .stamp-4 { top: 50px; right: -220px; transform: rotate(10deg); }
+    .stamp-5 { top: -30px; left: -220px; transform: rotate(-6deg); }
+
+    @media (max-width: 1024px) {
+      .stamp-frame { display: none; }
+    }
+  </style>
+</head>
+<body class="noise-bg selection:bg-accent selection:text-accent-foreground antialiased relative overflow-x-hidden">
+  
+  <div class="absolute top-0 right-0 pointer-events-none select-none text-[20vw] leading-none text-muted/20 font-bold -z-10 -mt-10">
+    LOGS
+  </div>
+
+  <header class="pt-24 pb-12 px-6 md:px-12 relative z-10 bg-background/90 border-b-2 border-dashed border-border">
+    <div class="max-w-4xl mx-auto w-full">
+      <div class="inline-block px-3 py-1 bg-accent text-accent-foreground font-bold text-xs tracking-widest uppercase mb-8">
+        Project Developer Journal
+      </div>
+      <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">
+        The 16-Hour<br><span class="text-accent">Descent</span>
+      </h1>
+      <p class="text-xl text-muted-foreground font-medium uppercase leading-relaxed">
+        A chronological record of our descent into madness while attempting to break the biological counting ceiling. Brought to you by caffeine, biriyani, and sheer panic.
+      </p>
+    </div>
+  </header>
+
+  <main class="py-20 px-6 md:px-12 relative z-10">
+    <div class="max-w-3xl mx-auto ml-12 md:mx-auto">
+      
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 7.15</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Total existential crisis. We are staring at these Base-5 holographic hands and forgot what we are building. Is it a calculator? Are we summoning a web deity? Nope, the hands just keep floating. We are completely clueless. The UI is brutal, but our brains are buffering like a dial-up connection. Completely lost, but at least we have memes and zero runtime dependencies.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 8.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Finally tackling the Base-5 engine bugs! The code compiled, the logic fired. Feeling invincible. We are back on track! But wait... the holy announcement dropped. FOOD. Before the implementation idea could even render in the DOM, my focus shifted completely. Next thing I know, I am knee-deep in Biriyani and Porotta. Base-5? More like Base-Biriyani. The only modulo operation happening right now is dividing the beef curry evenly among the team. The UI engine is paused, but the chewing engine is at 100% CPU. The code can wait, the stomach cannot.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: Post-Dinner</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            The post-biriyani food coma hit. Right on cue, a live musical session started. It was a really lovely and thoughtful touch from the organizers, but honestly felt like a trap to knock us out. Trying to debug a Base-5 DOM engine while acoustic melodies play is a wild contrast. Halfway through, we were fighting sleep just to keep our eyes open. Almost got fully hypnotized into a nap, but we survived. 10/10 vibe, 0/10 for staying awake to code.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="stamp-frame stamp-1">
+            <img src="./assets/journal/coding1.jpg" class="stamp-img" alt="Coding">
+          </div>
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 10.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Back on track! The brain is firing again. We started writing some core functions, particularly adding a calculator module. The main feature? A function that literally 'subtracts Thanos from the equation'. We spent an hour coding a method that snaps half the variables and dumps them to /dev/null. The math is highly questionable, but watching the arrays disintegrate gives a weird kind of satisfaction. When the calculation zeroes out perfectly, the console prints absolute victory. Sure, occasionally the snap destroys the wrong data and our codebase goes completely senseless, but we push through and keep debugging. Time to commit this before the next food distraction hits.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 11.15</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            First test run of the code. The outcome? Well, it didn't explode the laptop, so that's a win. But it's definitely not the result we hoped for. The math is currently behaving more like abstract art than logic. The Thanos snap dusted the wrong registers, and we somehow ended up with negative holographic hands. It's not the best, but hey—it's something. A beautiful, glitchy mess. Time to dive into the debugger and figure out what went wrong.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 11.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            First full visual implementation test. The result? Objectively worse than we hoped. We expected holographic Base-5 hands. What rendered on the canvas quite literally resembled aggressively vibrating bouncy balls. It was less 'cutting-edge hardware virtualization' and more 'geometry dash on steroids'. We really dropped the ball on this one. You could say our DOM nodes completely lost their grip. The hands didn't just break the biological ceiling, they broke the laws of physics. Currently debugging why our fingers have zero joints and maximum bounce. On the bright side, if the calculator fails, we have a solid prototype for a physics engine.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="stamp-frame stamp-3">
+            <img src="./assets/journal/red-error.jpg" class="stamp-img" alt="Red Error Screen">
+          </div>
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 12.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Started bug fixing. We thought it would be a quick sweep, but we found bugs we didn't even know were computationally possible. I'm talking existential bugs. Variables that are simultaneously true, false, and 'maybe'. The kind of errors that make you question your career choices. At one point, the math engine completely gave up and the console just threw a 'NaN', which felt incredibly personal. It is safe to say the codebase is actively fighting back. We are currently trying to negotiate a peace treaty with the DOM before it decides to unionize.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="stamp-frame stamp-2">
+            <img src="./assets/journal/coding2.jpg" class="stamp-img" alt="More Coding">
+          </div>
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 1.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Fixed so many issues we've lost count. Currently trying to audit the remaining problems, but honestly, we are at our wits' end. The only thing keeping the project afloat right now is an aggressive diet of snacks and sheer panic. 'How much fix now?' At this point, the code is holding us hostage. We are basically trading potato chips for working syntax. The DOM might finally be stable, but our sanity has been fully deprecated. One more bug and we might just convert the whole thing to a static image and call it a day.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node pb-12">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="stamp-frame stamp-4">
+            <img src="./assets/journal/landing.png" class="stamp-img" alt="Landing Page Built">
+          </div>
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 2.30</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            Pushing code to Git. The endless cycle of finding and fixing bugs continues. We are officially operating like zombies now—just staring blankly at the screen and groaning every time a red error pops up. The landing page is somehow still not built. Thankfully, our mentor descended like a beacon of hope and cleared up the massive confusion about what the landing page should actually look like. The good news? We have a clear vision. The bad news? Now I actually have to code the thing while my brain is running on 2% battery and snack crumbs. Time to chug some caffeine and forcefully output some HTML.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot"></div>
+        <div class="bg-background p-8 brutal-border relative z-10">
+          <div class="text-accent font-mono font-bold text-xl mb-2">Timestamp: 3.33</div>
+          <p class="text-lg leading-relaxed text-foreground/90">
+            We thought we were done. We were wrong. Just as we approached the finish line, a massive bug surfaced from the depths, causing the entire system to start hallucinating. It triggered a catastrophic cascade of 'OR' events, flooding the logic gates. The code wasn't just failing; it was dreaming. The UI multiplied endlessly, merging into each other like some digital nightmare. We are at the final stage. The energy drinks are empty, our minds are hallucinating right alongside the system, but we have to push through and squash this final boss of a bug.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="p-6 md:p-12 relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-background border-t-2 border-dashed border-border mt-12">
+    <div class="flex flex-col gap-2">
+      <div class="font-bold text-xl uppercase">Fingers++</div>
+      <div class="text-muted-foreground text-sm uppercase">Developer Logs</div>
+    </div>
+  </footer>
+</body>
+</html>
