@@ -29,25 +29,15 @@ body, html, #root {
 
 /* Animations */
 @keyframes snap {
-  0% { 
-    opacity: 1; 
-    filter: blur(0px) drop-shadow(0 0 0 rgba(0,0,0,0));
-    transform: scale(1) translateY(0); 
-  }
-  40% {
-    opacity: 0.9;
-    filter: blur(1px) sepia(1) hue-rotate(-30deg);
-    transform: scale(1.1) translateY(-5px) translateX(2px);
-  }
-  100% { 
-    opacity: 0; 
-    filter: blur(12px) sepia(1) hue-rotate(-50deg);
-    transform: scale(0.6) translateY(-30px) translateX(15px); 
-  }
+  0%   { opacity: 1;   filter: blur(0px)  sepia(0)   saturate(1)   hue-rotate(0deg);   }
+  20%  { opacity: 1;   filter: blur(0px)  sepia(0.4) saturate(2)   hue-rotate(-20deg); }
+  45%  { opacity: 0.8; filter: blur(2px)  sepia(0.8) saturate(4)   hue-rotate(-40deg); transform: scale(1.15) translateY(-8px); }
+  70%  { opacity: 0.4; filter: blur(6px)  sepia(1)   saturate(1)   hue-rotate(-60deg); transform: scale(0.8)  translateY(-20px) translateX(10px); }
+  100% { opacity: 0;   filter: blur(14px) sepia(1)   saturate(0.5) hue-rotate(-80deg); transform: scale(0.5)  translateY(-40px) translateX(20px); }
 }
 
 .snapping {
-  animation: snap 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: snap 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   pointer-events: none;
 }
 

@@ -459,15 +459,27 @@ function Workspace({ onExit }) {
   const snapHand = useCallback((id) => {
     if (!isMounted.current) return;
     playSnapSound();
-    const body = bodyMap.current.get(id);
-    if (body && engineRef.current) {
-      Matter.Composite.remove(engineRef.current.world, body);
-      bodyMap.current.delete(id);
+
+    // Mark as snapped immediately so React applies the .snapping CSS class
+    // Also freeze the physics body so it doesn't drift during the 1.2s animation
+    const bodyToFreeze = bodyMap.current.get(id);
+    if (bodyToFreeze && engineRef.current) {
+      Matter.Body.setStatic(bodyToFreeze, true);
+      Matter.Body.setVelocity(bodyToFreeze, { x: 0, y: 0 });
     }
     setHands(prev => prev.map(h => h.id === id ? { ...h, snapped: true } : h));
     addLog('DEL_NODE: Hand snapped and disintegrated.');
+
+    // Keep the physics body alive during the animation so the sync loop
+    // keeps the element positioned correctly while it plays out.
+    // Only remove body + DOM element AFTER the 1.2s animation finishes.
     setTimeout(() => {
       if (!isMounted.current) return;
+      const body = bodyMap.current.get(id);
+      if (body && engineRef.current) {
+        Matter.Composite.remove(engineRef.current.world, body);
+        bodyMap.current.delete(id);
+      }
       setHands(prev => prev.filter(h => h.id !== id));
       delete refMap.current[id];
     }, 1200);
@@ -812,48 +824,62 @@ function Workspace({ onExit }) {
       )}
 
       {/* -- Hands -- */}
-      {hands.map(hand => (
-        <div
-          key={hand.id}
-          ref={el => refMap.current[hand.id] = el}
-          className={`absolute w-[140px] h-[60px] pointer-events-auto select-none flex items-center justify-center gap-1 ${hand.snapped ? 'snapping' : ''}`}
-          onPointerDown={e => {
-            const body = bodyMap.current.get(hand.id);
-            if (body) {
-              Matter.Body.setStatic(body, true);
-              grabbedRef.current = {
-                id: hand.id,
-                startX: e.clientX, startY: e.clientY,
-                lastX:  e.clientX, lastY:  e.clientY,
-                offsetX: e.clientX - body.position.x,
-                offsetY: e.clientY - body.position.y
-              };
-              e.target.setPointerCapture(e.pointerId);
-            }
-          }}
-          onContextMenu={e => { e.preventDefault(); snapHand(hand.id); }}
-        >
-          {/* Value Badge */}
-          <div className="absolute top-0 right-0 bg-[#09090B]/90 border border-[#DFE104] text-[#DFE104] text-[10px] font-mono px-1 pointer-events-none z-10 translate-x-1 -translate-y-2">
-            {hand.isFraction ? getFractionString(hand.value) : hand.value}
+      {hands.map((hand, handIdx) => {
+        // Cumulative counter: sum all hands before this one, then add this hand's value
+        const prevSum = hands.slice(0, handIdx).reduce((s, h) => s + h.value, 0);
+        const cumulativeVal = Number((prevSum + hand.value).toFixed(3));
+        const badgeLabel = hand.isFraction
+          ? (Number.isInteger(prevSum) && prevSum > 0)
+            ? `${prevSum}+${getFractionString(hand.value)}`
+            : getFractionString(cumulativeVal)
+          : cumulativeVal;
+        return (
+          // Outer div: physics position anchor only — JS writes transform here, NO animation class
+          <div
+            key={hand.id}
+            ref={el => refMap.current[hand.id] = el}
+            className="absolute w-[140px] h-[60px] pointer-events-auto select-none"
+            onPointerDown={e => {
+              const body = bodyMap.current.get(hand.id);
+              if (body) {
+                Matter.Body.setStatic(body, true);
+                grabbedRef.current = {
+                  id: hand.id,
+                  startX: e.clientX, startY: e.clientY,
+                  lastX:  e.clientX, lastY:  e.clientY,
+                  offsetX: e.clientX - body.position.x,
+                  offsetY: e.clientY - body.position.y
+                };
+                e.target.setPointerCapture(e.pointerId);
+              }
+            }}
+            onContextMenu={e => { e.preventDefault(); snapHand(hand.id); }}
+          >
+            {/* Inner div: visual content + animation class — isolated from JS transform */}
+            <div className={`w-full h-full flex items-center justify-center gap-1 relative ${hand.snapped ? 'snapping' : ''}`}>
+              {/* Value Badge - cumulative counter */}
+              <div className="absolute top-0 right-0 bg-[#09090B]/90 border border-[#DFE104] text-[#DFE104] text-[10px] font-mono px-1 pointer-events-none z-10 translate-x-1 -translate-y-2">
+                {badgeLabel}
+              </div>
+              {/* Emoji / Image */}
+              <div className="flex items-center justify-center filter drop-shadow-[2px_2px_0_rgba(255,255,255,0.2)] pointer-events-none">
+                {hand.isFraction
+                  ? <div className="relative flex items-center justify-center">
+                      <span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span>
+                      <span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span>
+                    </div>
+                  : hand.value === 0 ? <span className="text-[54px]">✊</span>
+                  : hand.value === 1 ? <span className="text-[54px]">☝️</span>
+                  : hand.value === 2 ? <span className="text-[54px]">✌️</span>
+                  : hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
+                  : hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
+                  : <span className="text-[54px]">🖐️</span>
+                }
+              </div>
+            </div>
           </div>
-          {/* Emoji */}
-          <div className="flex items-center justify-center filter drop-shadow-[2px_2px_0_rgba(255,255,255,0.2)] pointer-events-none">
-            {hand.isFraction
-              ? <div className="relative flex items-center justify-center">
-                  <span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span>
-                  <span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span>
-                </div>
-              : hand.value === 0 ? <span className="text-[54px]">✊</span>
-              : hand.value === 1 ? <span className="text-[54px]">☝️</span>
-              : hand.value === 2 ? <span className="text-[54px]">✌️</span>
-              : hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
-              : hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
-              : <span className="text-[54px]">🖐️</span>
-            }
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
