@@ -1,10 +1,25 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+﻿import { useEffect, useRef, useState, useCallback } from 'react';
 import Matter from 'matter-js';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal, Volume2, X } from 'lucide-react';
 import './App.css';
 
 const MAX_HANDS = 500;
+
+const getFractionString = (decimal) => {
+  if (!decimal) return '0';
+  const val = Number(decimal.toFixed(3));
+  if (val === 0.5) return '1/2';
+  if (val === 0.25) return '1/4';
+  if (val === 0.75) return '3/4';
+  if (Math.abs(val - 0.333) < 0.002) return '1/3';
+  if (Math.abs(val - 0.667) < 0.002) return '2/3';
+  if (Math.abs(val - 0.167) < 0.002) return '1/6';
+  if (val === 0.2) return '1/5';
+  if (val === 0.1) return '1/10';
+  // simple approx
+  return val.toString();
+};
 
 function LandingPage({ onStart }) {
   return (
@@ -36,7 +51,7 @@ function LandingPage({ onStart }) {
         
         {/* System ID Badge */}
         <div className="border border-[#3F3F46] bg-[#09090B] px-6 py-2 mb-8 font-mono text-xs flex items-center gap-3 uppercase">
-          <span className="text-[#DFE104]">▶</span>
+          <span className="text-[#DFE104]">â–¶</span>
           [ SYSTEM ID: FINGERS_V2.0 ] // <span className="text-[#DFE104]">MEM: 5^10 BYTES</span>
         </div>
 
@@ -75,7 +90,7 @@ function LandingPage({ onStart }) {
             className="bg-[#DFE104] text-[#09090B] font-bold uppercase text-lg px-8 py-4 border-2 border-[#FAFAFA] flex flex-col items-center shadow-[4px_4px_0_0_#FAFAFA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
           >
             <span>INITIALIZE</span>
-            <span>WORKSPACE <span className="ml-2 font-normal">→</span></span>
+            <span>WORKSPACE <span className="ml-2 font-normal">â†’</span></span>
             <span className="text-xs font-mono mt-1">[CANVAS.HTML]</span>
           </button>
           <button className="border border-[#3F3F46] text-[#FAFAFA] bg-[#09090B] font-bold uppercase text-sm px-8 py-4 hover:bg-[#3F3F46] transition-colors flex flex-col items-center">
@@ -666,7 +681,7 @@ function Workspace({ onExit }) {
 
       if (target > 1000) {
         addLog("ERROR: Value exceeds node limit (1000).");
-        triggerInsult("1000+ hands? Absolutely not. Request denied.");
+        triggerInsult("I am not a supercomputer. Request denied.");
         return;
       }
       
@@ -830,7 +845,7 @@ function Workspace({ onExit }) {
             onClick={() => { playBubbleSound(); flingAll(); }}
             className="bg-[#09090B] text-red-500 border-2 border-red-500 h-10 px-6 font-bold uppercase hover:bg-red-500 hover:text-black whitespace-nowrap"
           >
-            ⚡ Fling All
+            âš¡ Fling All
           </button>
         </div>
       </div>
@@ -847,7 +862,7 @@ function Workspace({ onExit }) {
       <div className="absolute bottom-10 right-8 pointer-events-none z-10 border border-[#3F3F46] bg-[#09090B]/80 p-4 text-right">
         <div className="text-[#3F3F46] text-xs font-mono mb-2 uppercase">RADIX-5 DECOMPOSITION</div>
         <div className="text-[#DFE104] font-bold mb-1">
-          IΣ = {totalBase10} =&gt; {totalBase5}(B5)
+          IÎ£ = {totalBase10} =&gt; {totalBase5}(B5)
         </div>
         <div className="text-[#FAFAFA] text-xs font-mono opacity-60">
           [P:1] = [P:4] + [P:5] ...
@@ -884,13 +899,13 @@ function Workspace({ onExit }) {
           </div>
           {/* Emoji / Image */}
           <div className="flex items-center justify-center filter drop-shadow-[2px_2px_0_rgba(255,255,255,0.2)] pointer-events-none">
-            {hand.isFraction ? <span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span> :
-             hand.value === 0 ? <span className="text-[54px]">✊</span> :
-             hand.value === 1 ? <span className="text-[54px]">☝️</span> :
-             hand.value === 2 ? <span className="text-[54px]">✌️</span> :
+            {hand.isFraction ? <div className="relative flex items-center justify-center"><span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span><span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span></div> :
+             hand.value === 0 ? <span className="text-[54px]">âœŠ</span> :
+             hand.value === 1 ? <span className="text-[54px]">â˜ï¸</span> :
+             hand.value === 2 ? <span className="text-[54px]">âœŒï¸</span> :
              hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
              hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             <span className="text-[54px]">🖐️</span>}
+             <span className="text-[54px]">ðŸ–ï¸</span>}
           </div>
         </div>
       ))}
