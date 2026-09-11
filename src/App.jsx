@@ -1,33 +1,34 @@
-﻿import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Matter from 'matter-js';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Volume2, X } from 'lucide-react';
+import { Terminal, Volume2 } from 'lucide-react';
 import './App.css';
 
 const MAX_HANDS = 500;
 
 const getFractionString = (decimal) => {
-  if (!decimal) return '0';
+  if (!decimal && decimal !== 0) return '0';
   const val = Number(decimal.toFixed(3));
-  if (val === 0.5) return '1/2';
+  if (val === 0.5)  return '1/2';
   if (val === 0.25) return '1/4';
   if (val === 0.75) return '3/4';
   if (Math.abs(val - 0.333) < 0.002) return '1/3';
   if (Math.abs(val - 0.667) < 0.002) return '2/3';
   if (Math.abs(val - 0.167) < 0.002) return '1/6';
-  if (val === 0.2) return '1/5';
-  if (val === 0.1) return '1/10';
-  // simple approx
+  if (val === 0.2)  return '1/5';
+  if (val === 0.1)  return '1/10';
   return val.toString();
 };
 
+// --- Landing Page -------------------------------------------------------------
 function LandingPage({ onStart }) {
+  const MARQUEE_TEXT = 'SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE // ';
   return (
     <div className="w-full h-full flex flex-col bg-[#09090B] text-[#FAFAFA] font-['Space_Grotesk'] relative overflow-hidden grid-bg">
-      {/* Top Marquee */}
+
+      {/* Top Marquee - text duplicated for seamless looping */}
       <div className="w-full marquee-container text-xs py-1 z-10 font-mono">
         <div className="marquee-content px-4">
-          SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE // SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE //
+          {MARQUEE_TEXT}{MARQUEE_TEXT}
         </div>
       </div>
 
@@ -40,7 +41,7 @@ function LandingPage({ onStart }) {
         <div className="flex items-center gap-6 font-mono text-xs text-[#3F3F46]">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-[#3F3F46]"></span>
-            KERNEL: <span className="text-[#FAFAFA]">B5_STABLE</span>
+            KERNEL: <span className="text-[#FAFAFA] ml-1">B5_STABLE</span>
           </div>
           <div className="border border-[#DFE104] text-[#DFE104] px-3 py-1">RADIX: B5</div>
         </div>
@@ -48,11 +49,11 @@ function LandingPage({ onStart }) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center z-20 w-full max-w-4xl mx-auto px-4 mt-[-50px]">
-        
+
         {/* System ID Badge */}
         <div className="border border-[#3F3F46] bg-[#09090B] px-6 py-2 mb-8 font-mono text-xs flex items-center gap-3 uppercase">
-          <span className="text-[#DFE104]">â–¶</span>
-          [ SYSTEM ID: FINGERS_V2.0 ] // <span className="text-[#DFE104]">MEM: 5^10 BYTES</span>
+          <span className="text-[#DFE104]">&#9654;</span>
+          [ SYSTEM ID: FINGERS_V2.0 ] //<span className="text-[#DFE104] ml-2">MEM: 5^10 BYTES</span>
         </div>
 
         {/* Hero Title */}
@@ -64,12 +65,12 @@ function LandingPage({ onStart }) {
         </h2>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 w-full">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 w-full">
           {[
             { label: 'COUNTING METHOD', value: 'LITERAL FINGERS' },
-            { label: 'MATH SKILLS', value: 'QUESTIONABLE' },
-            { label: 'CPU TEMP', value: 'MELTING' },
-            { label: 'DIVISION BY ZERO', value: 'INSTANT DEATH' }
+            { label: 'MATH SKILLS',     value: 'QUESTIONABLE'    },
+            { label: 'CPU TEMP',        value: 'MELTING'         },
+            { label: 'DIV BY ZERO',     value: 'INSTANT DEATH'   }
           ].map((stat, i) => (
             <div key={i} className="border border-[#3F3F46] p-4 bg-[#09090B]">
               <div className="text-gray-400 text-xs font-mono mb-2 uppercase">{stat.label}</div>
@@ -79,24 +80,27 @@ function LandingPage({ onStart }) {
         </div>
 
         {/* Onboarding Tip */}
-        <div className="text-[#DFE104] font-mono text-xs mb-8 border border-[#DFE104] inline-block p-2 bg-[#09090B] animate-pulse">
-          <span className="font-bold">? HOW TO USE:</span> Left-Click to increment a hand. Right-Click to disintegrate it. Drag to fling.
+        <div className="text-[#DFE104] font-mono text-xs mb-8 border border-[#DFE104] px-4 py-2 bg-[#09090B] animate-pulse text-center">
+          <span className="font-bold">? HOW TO USE:</span>&nbsp;
+          Left-Click to increment a hand &nbsp;|&nbsp; Right-Click to disintegrate it &nbsp;|&nbsp; Drag to fling
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col md:flex-row gap-6 items-center mb-16">
-          <button 
+        <div className="flex flex-col md:flex-row gap-6 items-center mb-12">
+          <button
             onClick={onStart}
             className="bg-[#DFE104] text-[#09090B] font-bold uppercase text-lg px-8 py-4 border-2 border-[#FAFAFA] flex flex-col items-center shadow-[4px_4px_0_0_#FAFAFA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
           >
             <span>INITIALIZE</span>
-            <span>WORKSPACE <span className="ml-2 font-normal">â†’</span></span>
+            <span>WORKSPACE <span className="ml-2 font-normal">&#8594;</span></span>
             <span className="text-xs font-mono mt-1">[CANVAS.HTML]</span>
           </button>
-          <button className="border border-[#3F3F46] text-[#FAFAFA] bg-[#09090B] font-bold uppercase text-sm px-8 py-4 hover:bg-[#3F3F46] transition-colors flex flex-col items-center">
-            <span>DOCS //</span>
-            <span>RADIX_SPEC</span>
-          </button>
+          <div className="flex flex-col gap-2 text-xs font-mono text-[#3F3F46] border border-[#3F3F46] p-4 bg-[#09090B]">
+            <div><span className="text-[#DFE104]">A</span> - Add Hand</div>
+            <div><span className="text-[#DFE104]">F</span> - Fling All</div>
+            <div><span className="text-[#DFE104]">G</span> - Gore Mode</div>
+            <div><span className="text-[#DFE104]">P</span> - Physics Mode</div>
+          </div>
         </div>
 
         {/* Code Snippet Box */}
@@ -114,7 +118,6 @@ function LandingPage({ onStart }) {
             <div><span className="opacity-50">0x08:</span> SHATTER_BIO_CEILING: 5^10 = 9,765,625 RESOLVED IN REALTIME</div>
           </div>
         </div>
-
       </div>
 
       {/* Footer Status Bar */}
@@ -130,11 +133,11 @@ function LandingPage({ onStart }) {
           <div className="text-[#DFE104]">LATENCY: 0.12MS</div>
         </div>
         <div className="text-[#3F3F46]">
-          ARCHITECTS: <span className="text-[#FAFAFA]">GEOWON & SHIVAKANTH</span>
+          ARCHITECTS: <span className="text-[#FAFAFA]">GEOWON &amp; SHIVAKANTH</span>
         </div>
       </div>
 
-      {/* Very Bottom Footer */}
+      {/* Bottom Copyright */}
       <div className="w-full flex justify-between items-center px-4 py-2 font-mono text-[8px] text-[#3F3F46] uppercase z-20">
         <div>(C) 2026 FINGERS++ ALL REGISTERS ALLOCATED. NO RIGHTS RESERVED.</div>
         <div className="text-[#DFE104]">ALL RADIANS QUANTIZED TO BASE-5</div>
@@ -143,42 +146,38 @@ function LandingPage({ onStart }) {
   );
 }
 
-export default function App() {
-  const [inWorkspace, setInWorkspace] = useState(false);
-
-  if (!inWorkspace) {
-    return <LandingPage onStart={() => setInWorkspace(true)} />;
-  }
-
-  return <Workspace onExit={() => setInWorkspace(false)} />;
-}
-
+// --- Audio Helpers -------------------------------------------------------------
 let globalAudioCtx = null;
 const getAudioCtx = () => {
   if (!globalAudioCtx) {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (AudioCtx) globalAudioCtx = new AudioCtx();
   }
-  if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
-    globalAudioCtx.resume();
-  }
+  if (globalAudioCtx && globalAudioCtx.state === 'suspended') globalAudioCtx.resume();
   return globalAudioCtx;
 };
 
+// --- App Root -----------------------------------------------------------------
+export default function App() {
+  const [inWorkspace, setInWorkspace] = useState(false);
+  if (!inWorkspace) return <LandingPage onStart={() => setInWorkspace(true)} />;
+  return <Workspace onExit={() => setInWorkspace(false)} />;
+}
+
+// --- Workspace ----------------------------------------------------------------
 function Workspace({ onExit }) {
-  const sceneRef = useRef(null);
-  const engineRef = useRef(null);
-  const renderRef = useRef(null);
-  const bodyMap = useRef(new Map());
-  const refMap = useRef({});
-  const grabbedRef = useRef(null); // Tracks { id, offsetX, offsetY, isStaticBeforeDrag }
-  
+  const sceneRef    = useRef(null);
+  const engineRef   = useRef(null);
+  const bodyMap     = useRef(new Map());
+  const refMap      = useRef({});
+  const grabbedRef  = useRef(null);
+
   const [handsState, setHandsState] = useState([]);
   const handsRef = useRef([]);
   const setHands = useCallback((updater) => {
     setHandsState(prev => {
       const next = typeof updater === 'function' ? updater(prev) : updater;
-      handsRef.current = next; // Synchronize ref immediately
+      handsRef.current = next;
       return next;
     });
   }, []);
@@ -190,93 +189,127 @@ function Workspace({ onExit }) {
     return () => { isMounted.current = false; };
   }, []);
 
-  const [goreMode, setGoreMode] = useState(false);
-  const [physicsMode, setPhysicsMode] = useState(1); // 0 = Arranged, 1 = Zero-G, 2 = Earth
-  const [mathInput, setMathInput] = useState("");
+  const [goreMode, setGoreMode]     = useState(false);
+  const [physicsMode, setPhysicsMode] = useState(1); // 0=Arranged 1=Zero-G 2=Earth
+  const [mathInput, setMathInput]   = useState('');
   const [mathGraphic, setMathGraphic] = useState(null);
-  const [logs, setLogs] = useState([
-    "> KERNEL_INIT: Dynamic Register Physics Engine loaded.",
-    "> DEFAULT: ZERO-G Ambient active. Registers float freely."
+  const [insults, setInsults]       = useState([]);
+  const [logs, setLogs]             = useState([
+    '> KERNEL_INIT: Dynamic Register Physics Engine loaded.',
+    '> DEFAULT: ZERO-G Ambient active. Registers float freely.'
   ]);
-  const [terminalCollapsed, setTerminalCollapsed] = useState(false);
+  const [terminalOpen, setTerminalOpen] = useState(false);
 
+  // -- Audio ------------------------------------------------------------------
   const playBubbleSound = useCallback(() => {
     try {
-      const ctx = getAudioCtx();
-      if (!ctx) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
+      const ctx = getAudioCtx(); if (!ctx) return;
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
       osc.type = 'sine';
       osc.frequency.setValueAtTime(150, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1);
-      
       gain.gain.setValueAtTime(0, ctx.currentTime);
       gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.01);
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.1);
-    } catch (e) {
-      console.error(e);
-    }
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+    } catch (e) {}
   }, []);
 
   const playSnapSound = useCallback(() => {
     try {
-      const ctx = getAudioCtx();
-      if (!ctx) return;
+      const ctx = getAudioCtx(); if (!ctx) return;
       const bufferSize = ctx.sampleRate * 0.5;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-      
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
-      
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
+      const noise = ctx.createBufferSource(); noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter(); filter.type = 'lowpass';
       filter.frequency.setValueAtTime(2000, ctx.currentTime);
       filter.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.5);
-
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(1, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-      
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+      noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
       noise.start();
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) {}
   }, []);
-  
+
+  // -- Logging ----------------------------------------------------------------
   const addLog = useCallback((msg) => {
     const time = new Date().toLocaleTimeString('en-US', { hour12: false });
-    setLogs(prev => [...prev, `[${time}] ${msg}`].slice(-20));
+    setLogs(prev => [...prev, `[${time}] ${msg}`].slice(-30));
   }, []);
 
-  const totalRaw = hands.reduce((sum, h) => sum + h.value, 0);
-  const totalBase10 = Number(totalRaw.toFixed(3));
-  const totalBase5 = Math.floor(totalBase10).toString(5);
+  // -- Totals -----------------------------------------------------------------
+  const totalBase10 = Number(hands.reduce((s, h) => s + h.value, 0).toFixed(3));
+  const totalBase5  = Math.floor(totalBase10).toString(5);
 
+  // -- Insults ----------------------------------------------------------------
+  const RAGE_BAITS = [
+    'Are you seriously calculating that?',
+    'A 5-year-old could count that faster.',
+    'Skill issue detected in terminal.',
+    'Why do you even need a computer for this?',
+    'Bro is using base-5 to hide how bad they are at math.',
+    'Touch grass instead of touching virtual hands.',
+    'Imagine needing an app to count to 10.',
+    "I'm deleting system32 out of secondhand embarrassment.",
+    'Have you tried counting on your actual fingers?',
+    'Error 404: Math skills not found.',
+  ];
+  const LARGE_NUMBER_INSULTS = [
+    "This isn't a supercomputer. Calm down.",
+    'Are you trying to melt my CPU?',
+    "I'm a web app, not a quantum processor.",
+    'What do you need all these hands for? A cult?',
+    "Do you think I'm made of RAM?",
+    'Stop spamming numbers before I crash your browser.',
+    'My therapist warned me about users like you.',
+  ];
+
+  const triggerInsult = useCallback((specificMessage = null) => {
+    if (!isMounted.current) return;
+    const text = specificMessage || RAGE_BAITS[Math.floor(Math.random() * RAGE_BAITS.length)];
+    const id = Date.now() + Math.random();
+    // Keep insults away from screen edges
+    const x = 15 + Math.random() * 70;
+    const y = 15 + Math.random() * 70;
+    setInsults(prev => [...prev, { id, text, x, y }]);
+    addLog(`SYS_WARN: ${text}`);
+    try {
+      const ctx = getAudioCtx();
+      if (ctx) {
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+      }
+    } catch(e) {}
+    setTimeout(() => {
+      if (!isMounted.current) return;
+      setInsults(prev => prev.filter(i => i.id !== id));
+    }, 4000);
+  }, [addLog]);
+
+  // -- Gore mode log ----------------------------------------------------------
   useEffect(() => {
-    if (goreMode) addLog("WARNING: Safety protocols disabled. Gore mode active.");
+    if (goreMode) addLog('WARNING: Safety protocols disabled. Gore mode active.');
   }, [goreMode, addLog]);
 
-  // Physics Init
+  // -- Physics Init -----------------------------------------------------------
   useEffect(() => {
     const engine = Matter.Engine.create();
     engineRef.current = engine;
     engine.world.gravity.y = physicsMode === 2 ? 1 : 0;
-    engine.world.gravity.x = 0;
 
     const render = Matter.Render.create({
       element: sceneRef.current,
-      engine: engine,
+      engine,
       options: {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -284,49 +317,34 @@ function Workspace({ onExit }) {
         background: 'transparent'
       }
     });
-    renderRef.current = render;
 
     const createBoundaries = () => {
-      Matter.Composite.remove(engine.world, engine.world.bodies.filter(b => b.label === 'wall'));
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const t = 100;
-      const boundaries = [
-        Matter.Bodies.rectangle(w/2, -t/2, w, t, { isStatic: true, label: 'wall' }),
-        Matter.Bodies.rectangle(w/2, h + t/2, w, t, { isStatic: true, label: 'wall' }),
-        Matter.Bodies.rectangle(-t/2, h/2, t, h, { isStatic: true, label: 'wall' }),
-        Matter.Bodies.rectangle(w + t/2, h/2, t, h, { isStatic: true, label: 'wall' })
-      ];
-      Matter.Composite.add(engine.world, boundaries);
+      const walls = Matter.Composite.allBodies(engine.world).filter(b => b.label === 'wall');
+      Matter.Composite.remove(engine.world, walls);
+      const w = window.innerWidth, h = window.innerHeight, t = 100;
+      Matter.Composite.add(engine.world, [
+        Matter.Bodies.rectangle(w/2, -t/2,   w, t,   { isStatic: true, label: 'wall' }),
+        Matter.Bodies.rectangle(w/2, h+t/2,  w, t,   { isStatic: true, label: 'wall' }),
+        Matter.Bodies.rectangle(-t/2, h/2,   t, h,   { isStatic: true, label: 'wall' }),
+        Matter.Bodies.rectangle(w+t/2, h/2,  t, h,   { isStatic: true, label: 'wall' }),
+      ]);
     };
     createBoundaries();
 
     const handleResize = () => {
-      render.canvas.width = window.innerWidth;
+      render.canvas.width  = window.innerWidth;
       render.canvas.height = window.innerHeight;
       createBoundaries();
-      arrangeHands();
-      
-      // Pull trapped hands back into bounds
-      if (engineRef.current) {
-        const bodies = Matter.Composite.allBodies(engineRef.current.world);
-        bodies.forEach(b => {
-          if (b.isStatic) return;
-          let newX = b.position.x;
-          let newY = b.position.y;
-          let changed = false;
-          
-          if (newX > window.innerWidth) { newX = window.innerWidth - 100; changed = true; }
-          if (newX < 0) { newX = 100; changed = true; }
-          if (newY > window.innerHeight) { newY = window.innerHeight - 100; changed = true; }
-          if (newY < 0) { newY = 100; changed = true; }
-          
-          if (changed) {
-            Matter.Body.setPosition(b, { x: newX, y: newY });
-            Matter.Body.setVelocity(b, { x: 0, y: 0 });
-          }
-        });
-      }
+      // Bring out-of-bounds bodies back
+      Matter.Composite.allBodies(engine.world).forEach(b => {
+        if (b.isStatic) return;
+        let { x, y } = b.position, changed = false;
+        if (x > window.innerWidth)  { x = window.innerWidth  - 100; changed = true; }
+        if (x < 0)                  { x = 100;                      changed = true; }
+        if (y > window.innerHeight) { y = window.innerHeight - 100; changed = true; }
+        if (y < 0)                  { y = 100;                      changed = true; }
+        if (changed) { Matter.Body.setPosition(b, { x, y }); Matter.Body.setVelocity(b, { x: 0, y: 0 }); }
+      });
     };
     window.addEventListener('resize', handleResize);
 
@@ -334,19 +352,18 @@ function Workspace({ onExit }) {
     const runner = Matter.Runner.create();
     Matter.Runner.run(runner, engine);
 
-    let animationFrame;
+    // 60fps DOM sync loop
+    let raf;
     const syncLoop = () => {
       handsRef.current.forEach(hand => {
-        if (!hand.snapped) {
-          const body = bodyMap.current.get(hand.id);
-          // If grabbed by custom drag, we control it directly
-          if (body && refMap.current[hand.id]) {
-            refMap.current[hand.id].style.transform = 
-              `translate3d(${body.position.x - 70}px, ${body.position.y - 30}px, 0px) rotate(${body.angle}rad)`;
-          }
+        if (hand.snapped) return;
+        const body = bodyMap.current.get(hand.id);
+        const el   = refMap.current[hand.id];
+        if (body && el) {
+          el.style.transform = `translate3d(${body.position.x - 70}px, ${body.position.y - 30}px, 0) rotate(${body.angle}rad)`;
         }
       });
-      animationFrame = requestAnimationFrame(syncLoop);
+      raf = requestAnimationFrame(syncLoop);
     };
     syncLoop();
 
@@ -356,394 +373,274 @@ function Workspace({ onExit }) {
       Matter.Runner.stop(runner);
       Matter.Engine.clear(engine);
       if (render.canvas) render.canvas.remove();
-      cancelAnimationFrame(animationFrame);
-      // Clean up maps so React 18 strict mode doesn't crash on remount with stale physics bodies
+      cancelAnimationFrame(raf);
       bodyMap.current.clear();
       refMap.current = {};
       setHandsState([]);
       handsRef.current = [];
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // -- Arrange Hands ---------------------------------------------------------
   const arrangeHands = useCallback(() => {
     if (physicsMode !== 0) return;
-    const paddingX = 160;
-    const paddingY = 110;
-    const columns = Math.max(1, Math.floor((window.innerWidth - 200) / paddingX));
-    const startX = (window.innerWidth - (Math.min(handsRef.current.length, columns) - 1) * paddingX) / 2;
-    const startY = 200;
-
+    const paddingX = 160, paddingY = 110;
+    const columns  = Math.max(1, Math.floor((window.innerWidth - 200) / paddingX));
+    const startX   = (window.innerWidth - (Math.min(handsRef.current.length, columns) - 1) * paddingX) / 2;
+    const startY   = 160;
     handsRef.current.forEach((hand, i) => {
       const body = bodyMap.current.get(hand.id);
       if (body) {
         Matter.Body.setStatic(body, true);
         Matter.Body.setAngle(body, 0);
-        Matter.Body.setPosition(body, { 
-          x: startX + (i % columns) * paddingX, 
-          y: startY + Math.floor(i / columns) * paddingY 
+        Matter.Body.setPosition(body, {
+          x: startX + (i % columns) * paddingX,
+          y: startY + Math.floor(i / columns) * paddingY
         });
       }
     });
   }, [physicsMode]);
 
+  // Re-arrange whenever hand count changes or physicsMode changes
+  useEffect(() => { arrangeHands(); }, [handsState.length, arrangeHands]);
+
   useEffect(() => {
-    if (engineRef.current) {
-      engineRef.current.world.gravity.y = physicsMode === 2 ? 1 : 0;
-      if (physicsMode === 0) {
-        arrangeHands();
-      } else {
-        handsRef.current.forEach(hand => {
-          const body = bodyMap.current.get(hand.id);
-          if (body) {
-            Matter.Body.setStatic(body, false);
-            if (physicsMode === 1 && Math.abs(body.velocity.x) < 0.1 && Math.abs(body.velocity.y) < 0.1) {
-              const angle = Math.random() * Math.PI * 2;
-              Matter.Body.applyForce(body, body.position, {
-                x: Math.cos(angle) * 0.05,
-                y: Math.sin(angle) * 0.05
-              });
-            }
+    if (!engineRef.current) return;
+    engineRef.current.world.gravity.y = physicsMode === 2 ? 1 : 0;
+    if (physicsMode === 0) {
+      arrangeHands();
+    } else {
+      handsRef.current.forEach(hand => {
+        const body = bodyMap.current.get(hand.id);
+        if (body) {
+          Matter.Body.setStatic(body, false);
+          if (physicsMode === 1 && Math.abs(body.velocity.x) < 0.1 && Math.abs(body.velocity.y) < 0.1) {
+            const angle = Math.random() * Math.PI * 2;
+            Matter.Body.applyForce(body, body.position, {
+              x: Math.cos(angle) * 0.05,
+              y: Math.sin(angle) * 0.05
+            });
           }
-        });
-      }
+        }
+      });
     }
   }, [physicsMode, arrangeHands]);
 
-  useEffect(() => {
-    arrangeHands();
-  }, [handsState.length, arrangeHands]);
-
-  const spawnHand = (value = 1, isFraction = false) => {
-    if (!isMounted.current) return;
+  // -- Spawn Hand -------------------------------------------------------------
+  const spawnHand = useCallback((value = 1, isFraction = false) => {
+    if (!isMounted.current || !engineRef.current) return;
     const id = Date.now().toString() + Math.random().toString();
-    const x = window.innerWidth / 2;
-    const y = window.innerHeight / 2;
-    
-    const body = Matter.Bodies.rectangle(x, y, 140, 60, { 
-      restitution: 0.85, 
+    const x  = window.innerWidth  / 2;
+    const y  = window.innerHeight / 2;
+    const body = Matter.Bodies.rectangle(x, y, 140, 60, {
+      restitution: 0.85,
       frictionAir: 0.01,
       isStatic: physicsMode === 0,
-      render: { visible: false } 
+      render: { visible: false }
     });
     body.handId = id;
-    
     if (physicsMode !== 0) {
       const angle = Math.random() * Math.PI * 2;
-      const forceMagnitude = 0.05;
       Matter.Body.applyForce(body, body.position, {
-        x: Math.cos(angle) * forceMagnitude,
-        y: Math.sin(angle) * forceMagnitude
+        x: Math.cos(angle) * 0.05,
+        y: Math.sin(angle) * 0.05
       });
     }
-
     Matter.Composite.add(engineRef.current.world, body);
     bodyMap.current.set(id, body);
-
     setHands(prev => {
       const next = [...prev, { id, value, snapped: false, isFraction }];
-      addLog(`SPAWN_NODE: Hand generated with Base-5 register value [${isFraction ? value.toFixed(3) : value}].`);
+      addLog(`SPAWN_NODE: Hand [${isFraction ? value.toFixed(3) : value}] spawned.`);
       return next;
     });
-  };
+  }, [physicsMode, setHands, addLog]);
 
-  const handleAddHand = () => {
-    spawnHand(0); // Default to 0 (fist)
-  };
-
+  // -- Snap Hand -------------------------------------------------------------
   const snapHand = useCallback((id) => {
     if (!isMounted.current) return;
     playSnapSound();
     const body = bodyMap.current.get(id);
-    if (body) {
+    if (body && engineRef.current) {
       Matter.Composite.remove(engineRef.current.world, body);
       bodyMap.current.delete(id);
     }
     setHands(prev => prev.map(h => h.id === id ? { ...h, snapped: true } : h));
-    addLog(`DEL_NODE: Hand snapped and disintegrated.`);
+    addLog('DEL_NODE: Hand snapped and disintegrated.');
     setTimeout(() => {
       if (!isMounted.current) return;
       setHands(prev => prev.filter(h => h.id !== id));
       delete refMap.current[id];
     }, 1200);
-  }, [addLog, playSnapSound]);
+  }, [addLog, playSnapSound, setHands]);
 
-  const handleHandClick = useCallback((e, id) => {
+  // -- Click / Increment Hand -------------------------------------------------
+  const handleHandClick = useCallback((id) => {
     playBubbleSound();
-    
     setHands(prev => {
       const idx = prev.findIndex(h => h.id === id);
       if (idx === -1) return prev;
-      
       const hand = prev[idx];
-      if (hand.snapped) return prev; // Prevent race conditions on already dying hands
-      
+      if (hand.snapped) return prev;
       const newHands = [...prev];
-      const updatedHand = { ...hand }; // Correct React state immutability
-      
-      if (updatedHand.isFraction) {
-        updatedHand.value = 1;
-        updatedHand.isFraction = false;
-        addLog(`MOD_NODE: Converted fraction node into whole integer 1.`);
+      const updated  = { ...hand };
+      if (updated.isFraction) {
+        updated.value      = 1;
+        updated.isFraction = false;
+        addLog('MOD_NODE: Fraction node converted to integer 1.');
       } else {
-        let nextVal = updatedHand.value + 1;
-        // Cycle back to 0 instead of breaking the hand
-        if (nextVal > 5) {
-          nextVal = 0;
-        }
-        updatedHand.value = nextVal;
-        addLog(`MOD_NODE: Incremented hand to [VAL:${nextVal}]`);
+        updated.value = (updated.value + 1) > 5 ? 0 : updated.value + 1;
+        addLog(`MOD_NODE: Hand incremented to [${updated.value}].`);
       }
-      
-      newHands[idx] = updatedHand;
+      newHands[idx] = updated;
       return newHands;
     });
-  }, [addLog, playBubbleSound, setHands]);
+  }, [playBubbleSound, setHands, addLog]);
 
+  // -- Global Pointer Drag ----------------------------------------------------
   useEffect(() => {
-    const handleGlobalMove = (e) => {
-      const grabbed = grabbedRef.current;
-      if (!grabbed) return;
-      
-      const body = bodyMap.current.get(grabbed.id);
+    const onMove = (e) => {
+      const g = grabbedRef.current;
+      if (!g) return;
+      const body = bodyMap.current.get(g.id);
       if (body) {
-        Matter.Body.setStatic(body, true);
-        Matter.Body.setPosition(body, {
-          x: e.clientX - grabbed.offsetX,
-          y: e.clientY - grabbed.offsetY
-        });
-        
-        // Track velocity manually since e.movementX is unreliable on pointer events
-        grabbed.velX = e.clientX - grabbed.lastX;
-        grabbed.velY = e.clientY - grabbed.lastY;
-        grabbed.lastX = e.clientX;
-        grabbed.lastY = e.clientY;
-        grabbed.lastMoveTime = Date.now();
+        Matter.Body.setPosition(body, { x: e.clientX - g.offsetX, y: e.clientY - g.offsetY });
+        g.velX = e.clientX - g.lastX;
+        g.velY = e.clientY - g.lastY;
+        g.lastX = e.clientX;
+        g.lastY = e.clientY;
+        g.lastMoveTime = Date.now();
       }
     };
-
-    const handleGlobalUp = (e) => {
-      const grabbed = grabbedRef.current;
-      if (!grabbed) return;
-      
-      const body = bodyMap.current.get(grabbed.id);
+    const onUp = (e) => {
+      const g = grabbedRef.current;
+      if (!g) return;
+      const body = bodyMap.current.get(g.id);
       if (body) {
         Matter.Body.setStatic(body, physicsMode === 0);
-        
-        const dist = Math.hypot(e.clientX - grabbed.startX, e.clientY - grabbed.startY);
+        const dist = Math.hypot(e.clientX - g.startX, e.clientY - g.startY);
         if (dist < 5) {
-          handleHandClick(e, grabbed.id);
-        } else {
-          if (physicsMode !== 0) {
-            // Prevent runaway velocity if the mouse was stationary before releasing
-            const timeSinceLastMove = Date.now() - (grabbed.lastMoveTime || 0);
-            if (timeSinceLastMove < 100) {
-              Matter.Body.setVelocity(body, {
-                x: (grabbed.velX || 0) * 0.8,
-                y: (grabbed.velY || 0) * 0.8
-              });
-            } else {
-              Matter.Body.setVelocity(body, { x: 0, y: 0 });
-            }
-          }
+          // Tap = left-click = increment
+          handleHandClick(g.id);
+        } else if (physicsMode !== 0) {
+          const stale = Date.now() - (g.lastMoveTime || 0) > 100;
+          Matter.Body.setVelocity(body, stale ? { x: 0, y: 0 } : {
+            x: (g.velX || 0) * 0.8,
+            y: (g.velY || 0) * 0.8
+          });
         }
       }
       grabbedRef.current = null;
     };
-
-    window.addEventListener('pointermove', handleGlobalMove);
-    window.addEventListener('pointerup', handleGlobalUp);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup',   onUp);
     return () => {
-      window.removeEventListener('pointermove', handleGlobalMove);
-      window.removeEventListener('pointerup', handleGlobalUp);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup',   onUp);
     };
   }, [physicsMode, handleHandClick]);
 
-  const flingAll = () => {
+  // -- Fling All --------------------------------------------------------------
+  const flingAll = useCallback(() => {
     triggerInsult();
     if (physicsMode === 0) setPhysicsMode(1);
-    
     handsRef.current.forEach(hand => {
       const body = bodyMap.current.get(hand.id);
       if (body) {
         Matter.Body.setStatic(body, false);
         const angle = Math.random() * Math.PI * 2;
-        const force = 0.5 + Math.random();
-        Matter.Body.setVelocity(body, {
-          x: Math.cos(angle) * 30,
-          y: Math.sin(angle) * 30 - 20
-        });
-        Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 1);
+        Matter.Body.setVelocity(body, { x: Math.cos(angle) * 30, y: Math.sin(angle) * 30 - 20 });
+        Matter.Body.setAngularVelocity(body, (Math.random() - 0.5));
       }
     });
-    addLog("SYS_OVERRIDE: Applied omnidirectional kinetic burst to all registers.");
-  };
+    addLog('SYS_OVERRIDE: Applied omnidirectional kinetic burst to all registers.');
+  }, [physicsMode, triggerInsult, addLog]);
 
-  const [insults, setInsults] = useState([]);
-  
-  const RAGE_BAITS = [
-    "Are you seriously calculating that?",
-    "A 5-year-old could count that faster.",
-    "Skill issue detected in terminal.",
-    "Why do you even need a computer for this?",
-    "Bro is using base-5 to hide how bad they are at math.",
-    "Touch grass instead of touching virtual hands.",
-    "Imagine needing an app to count to 10.",
-    "I'm deleting system32 out of secondhand embarrassment."
-  ];
-
-  const triggerInsult = useCallback((specificMessage = null) => {
-    if (!isMounted.current) return;
-    const text = specificMessage || RAGE_BAITS[Math.floor(Math.random() * RAGE_BAITS.length)];
-    const newInsult = {
-      id: Date.now() + Math.random(),
-      text,
-      x: 20 + Math.random() * 60, // 20% to 80% screen width
-      y: 20 + Math.random() * 60  // 20% to 80% screen height
+  // -- Keyboard Shortcuts -----------------------------------------------------
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.key === 'a' || e.key === 'A') { playBubbleSound(); spawnHand(0); }
+      if (e.key === 'f' || e.key === 'F') { playBubbleSound(); flingAll(); }
+      if (e.key === 'g' || e.key === 'G') { playBubbleSound(); setGoreMode(m => !m); }
+      if (e.key === 'p' || e.key === 'P') { playBubbleSound(); setPhysicsMode(m => (m + 1) % 3); }
+      if (e.key === 't' || e.key === 'T') { setTerminalOpen(m => !m); }
     };
-    
-    setInsults(prev => [...prev, newInsult]);
-    addLog(`SYS_WARN: ${text}`);
-    
-    // Play error sound
-    try {
-      const ctx = getAudioCtx();
-      if (ctx) {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(100, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.3);
-      }
-    } catch(e) {}
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [playBubbleSound, spawnHand, flingAll]);
 
-    setTimeout(() => {
-      if (!isMounted.current) return;
-      setInsults(prev => prev.filter(i => i.id !== newInsult.id));
-    }, 4000);
-  }, [addLog]);
-
-  const LARGE_NUMBER_INSULTS = [
-    "This isn't a super computer. Calm down.",
-    "Are you trying to melt my CPU?",
-    "I'm a web app, not a quantum processor.",
-    "What do you need all these hands for? A cult?",
-    "Do you think I'm made of RAM?",
-    "Stop spamming numbers before I crash your browser."
-  ];
-
-  const executeMath = () => {
-    if (!mathInput) return;
-    
-    // Security check: Limit string length to prevent ReDoS or infinite thread locks
+  // -- Execute Math -----------------------------------------------------------
+  const executeMath = useCallback(() => {
+    if (!mathInput.trim()) return;
     if (mathInput.length > 50) {
-      addLog("SECURITY_ERROR: Expression exceeds 50 characters. Execution blocked.");
+      addLog('SECURITY_ERROR: Expression exceeds 50 characters.');
       triggerInsult("Equation too long. I'm not reading all that.");
       return;
     }
-    
-    // Security check: Reject input that isn't purely math (XSS protection)
-    if (/[^0-9\+\-\*\/\.\(\)\s]/.test(mathInput)) {
-      addLog("SECURITY_ERROR: Non-arithmetic characters detected. Execution blocked.");
-      triggerInsult("Nice try. Injection blocked. Type real math next time.");
+    if (/[^0-9+\-*/.()\s]/.test(mathInput)) {
+      addLog('SECURITY_ERROR: Non-arithmetic characters detected.');
+      triggerInsult('Nice try. Injection blocked. Type real math next time.');
       return;
     }
-    
     addLog(`EVALUATE: ${mathInput}`);
     try {
-      const result = Function(`"use strict";return (${mathInput})`)();
-      
+      const result = Function('"use strict";return (' + mathInput + ')')();
       if (typeof result !== 'number' || isNaN(result) || !isFinite(result)) {
-        addLog("ERROR: Math evaluation resulted in NaN or Infinity.");
-        triggerInsult("Did you try to divide by zero? Or are you just typing garbage?");
+        addLog('ERROR: NaN or Infinity produced.');
+        triggerInsult('Did you divide by zero? Are you OK?');
         return;
       }
-      
       addLog(`RESULT: ${result}`);
-      
       setMathGraphic({ text: `${mathInput} = ${result}`, id: Date.now() });
       setTimeout(() => setMathGraphic(null), 2500);
-      
-      let target = result;
-      if (target < 0) {
-        addLog("ERROR: Negative fingers don't exist.");
-        target = 0;
-      }
-      
-      if (target >= 500) {
-        triggerInsult(LARGE_NUMBER_INSULTS[Math.floor(Math.random() * LARGE_NUMBER_INSULTS.length)]);
-      }
 
+      let target = result;
+      if (target < 0) { addLog("ERROR: Negative fingers don't exist."); target = 0; }
+      if (target >= 500) triggerInsult(LARGE_NUMBER_INSULTS[Math.floor(Math.random() * LARGE_NUMBER_INSULTS.length)]);
       if (target > 1000) {
-        addLog("ERROR: Value exceeds node limit (1000).");
+        addLog('ERROR: Value exceeds node limit (1000).');
         triggerInsult("I am not a supercomputer. Request denied.");
         return;
       }
-      
-      // Random 15% chance to just insult them anyway if it wasn't a huge number
-      if (target < 500 && Math.random() < 0.15) {
-        triggerInsult();
-      }
+      if (target < 500 && Math.random() < 0.15) triggerInsult();
 
-      let currentTotal = Number(handsRef.current.reduce((sum, h) => sum + h.value, 0).toFixed(3));
+      const currentTotal = Number(handsRef.current.reduce((s, h) => s + h.value, 0).toFixed(3));
 
       const spawnValue = (val) => {
-        const intPart = Math.floor(val);
+        const intPart  = Math.floor(val);
         const fracPart = Number((val - intPart).toFixed(3));
         const numFives = Math.floor(intPart / 5);
         const remainder = intPart % 5;
         for (let i = 0; i < numFives; i++) setTimeout(() => spawnHand(5), i * 30);
-        
-        // Only spawn remainder if there is one, or if we specifically need to spawn a zero (e.g. 0 math)
-        if (remainder > 0 || (numFives === 0 && fracPart === 0 && val === 0)) {
-            setTimeout(() => spawnHand(remainder), numFives * 30);
-        }
-        if (fracPart > 0 && goreMode) {
-            setTimeout(() => spawnHand(fracPart, true), numFives * 30 + 30);
-        }
+        if (remainder > 0) setTimeout(() => spawnHand(remainder), numFives * 30);
+        if (fracPart > 0 && goreMode) setTimeout(() => spawnHand(fracPart, true), numFives * 30 + 30);
       };
 
       if (target > currentTotal) {
-         // Spawning new hands
-         spawnValue(target - currentTotal);
+        spawnValue(target - currentTotal);
       } else if (target < currentTotal) {
-         // Subtraction / Division -> Thanos Snap exactly the difference!
-         let toRemove = Number((currentTotal - target).toFixed(3));
-         let handsToSnap = [];
-         let remainingHands = [...handsRef.current];
-         
-         // Sort hands descending by value to optimally remove big numbers first
-         remainingHands.sort((a,b) => b.value - a.value);
-         
-         for (let h of remainingHands) {
-             let val = h.value;
-             if (toRemove >= val && val > 0) {
-                 toRemove = Number((toRemove - val).toFixed(3));
-                 handsToSnap.push(h);
-             }
-         }
-         
-         if (toRemove > 0) {
-             // If we couldn't make exact change (e.g. need to remove 3, but only have a 5-hand)
-             // We snap EVERYTHING in a massive wave, then respawn the target result
-             handsRef.current.forEach((h, i) => setTimeout(() => snapHand(h.id), i * 15));
-             setTimeout(() => spawnValue(target), handsRef.current.length * 15 + 400);
-         } else {
-             // We found exact change! Staggered Thanos snap for the hands that are being removed.
-             handsToSnap.forEach((h, i) => setTimeout(() => snapHand(h.id), i * 150));
-         }
+        let toRemove = Number((currentTotal - target).toFixed(3));
+        const sorted = [...handsRef.current].sort((a, b) => b.value - a.value);
+        const toSnap = [];
+        for (const h of sorted) {
+          if (toRemove >= h.value && h.value > 0) {
+            toRemove = Number((toRemove - h.value).toFixed(3));
+            toSnap.push(h);
+          }
+        }
+        if (toRemove > 0) {
+          // Can't make exact change - clear all, respawn target
+          handsRef.current.forEach((h, i) => setTimeout(() => snapHand(h.id), i * 15));
+          setTimeout(() => spawnValue(target), handsRef.current.length * 15 + 400);
+        } else {
+          toSnap.forEach((h, i) => setTimeout(() => snapHand(h.id), i * 150));
+        }
       }
-
     } catch (e) {
-      addLog("ERROR: Invalid math expression.");
-      triggerInsult("Syntax error? Did you literally fail basic typing?");
+      addLog('ERROR: Invalid math expression.');
+      triggerInsult('Syntax error? Did you literally fail basic typing?');
     }
-  };
+  }, [mathInput, addLog, triggerInsult, goreMode, spawnHand, snapHand]);
 
   const togglePhysics = () => {
     const next = (physicsMode + 1) % 3;
@@ -751,161 +648,190 @@ function Workspace({ onExit }) {
     addLog(`PHYSICS: Set to ${next === 0 ? 'STATIC' : next === 1 ? 'ZERO-G' : 'EARTH-G'}`);
   };
 
+  // -- Render -----------------------------------------------------------------
   return (
     <div className="w-full h-full bg-[#09090B] font-['Space_Grotesk'] overflow-hidden relative grid-bg">
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-auto" ref={sceneRef} />
+      {/* Physics Canvas */}
+      <div className="absolute inset-0 pointer-events-none" ref={sceneRef} />
 
-      {/* RAGE BAIT INSULTS */}
-      {insults.map(insult => (
-        <div 
-          key={insult.id}
-          className="fixed z-[100] font-bold font-mono text-red-500 uppercase tracking-tighter text-2xl drop-shadow-[2px_2px_0_#000] animate-float-insult"
-          style={{ left: `${insult.x}%`, top: `${insult.y}%` }}
+      {/* -- Insults -- */}
+      {insults.map(ins => (
+        <div
+          key={ins.id}
+          className="fixed z-[100] font-bold font-mono text-red-500 uppercase tracking-tighter text-xl md:text-2xl drop-shadow-[2px_2px_0_#000] animate-float-insult pointer-events-none"
+          style={{ left: `${ins.x}%`, top: `${ins.y}%`, transform: 'translate(-50%,-50%)' }}
         >
-          &gt; {insult.text}
+          &gt; {ins.text}
         </div>
       ))}
 
-      {/* MATH GRAPHIC OVERLAY */}
+      {/* -- Math Flash Overlay -- */}
       {mathGraphic && (
-        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
-          <div className="text-[#DFE104] font-mono text-[8rem] font-bold opacity-0 animate-math-flash text-center drop-shadow-[0_0_20px_rgba(223,225,4,0.8)]">
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center px-8">
+          <div className="text-[#DFE104] font-mono text-4xl md:text-7xl font-bold opacity-0 animate-math-flash text-center drop-shadow-[0_0_20px_rgba(223,225,4,0.8)] break-all">
             {mathGraphic.text}
           </div>
         </div>
       )}
 
-      {/* HEADER BAR */}
-      <div className="absolute top-0 left-0 w-full z-40 bg-[#09090B] border-b-2 border-[#3F3F46] flex flex-col pointer-events-auto">
+      {/* -- Header Bar -- */}
+      <div className="absolute top-0 left-0 w-full z-40 bg-[#09090B] border-b-2 border-[#3F3F46] pointer-events-auto">
+        {/* Top Row */}
         <div className="flex justify-between items-center px-4 py-2 border-b border-[#3F3F46]">
           <div className="flex gap-4 items-center">
-            <button onClick={() => { playBubbleSound(); onExit && onExit(); }} className="border border-[#3F3F46] px-3 py-1 text-xs hover:bg-[#FAFAFA] hover:text-[#09090B] uppercase">
-              &lt; Exit_Workspace
+            <button
+              onClick={() => { playBubbleSound(); onExit && onExit(); }}
+              className="border border-[#3F3F46] px-3 py-1 text-xs hover:bg-[#FAFAFA] hover:text-[#09090B] uppercase"
+            >
+              &lt; Exit
             </button>
             <div className="flex items-center gap-2 font-bold text-sm">
               <span className="w-3 h-3 bg-[#DFE104]"></span>
               FINGERS++ <span className="text-[#3F3F46] text-xs font-normal">KERNEL::OS_REALTIME</span>
             </div>
           </div>
-          
           <div className="flex items-center gap-6">
             <div className="text-xs uppercase text-[#3F3F46] font-bold">
-              HAND_NODES: <span className="text-[#DFE104] text-sm">{hands.length}</span>
+              NODES: <span className="text-[#DFE104] text-sm">{hands.length}</span>
             </div>
             <div className="text-xs uppercase text-[#3F3F46] font-bold">
-              TOTAL_VAL (B10): <span className="text-[#FAFAFA] text-sm">{totalBase10}</span> <span className="text-[#DFE104] ml-1">{totalBase5}(B5)</span>
+              TOTAL: <span className="text-[#FAFAFA] text-sm">{totalBase10}</span>
+              <span className="text-[#DFE104] ml-2">{totalBase5}(B5)</span>
             </div>
           </div>
-
           <div className="flex items-center gap-4 text-xs font-bold uppercase">
-            <button 
-              onClick={() => { playBubbleSound(); setGoreMode(!goreMode); }}
+            <button
+              onClick={() => { playBubbleSound(); setGoreMode(m => !m); }}
               className={`flex items-center gap-2 border px-2 py-1 transition-colors ${goreMode ? 'border-red-500 text-red-500' : 'border-[#3F3F46] text-[#3F3F46] hover:text-[#FAFAFA]'}`}
             >
-              <span className={`w-2 h-2 ${goreMode ? 'bg-red-500' : 'bg-[#3F3F46]'}`}></span> GORE MODE
+              <span className={`w-2 h-2 ${goreMode ? 'bg-red-500' : 'bg-[#3F3F46]'}`}></span>
+              GORE {goreMode ? 'ON' : 'OFF'}
             </button>
-            <button 
+            <button
               onClick={() => { playBubbleSound(); togglePhysics(); }}
               className="text-[#DFE104] hover:text-[#FAFAFA] flex items-center gap-1"
             >
-              PHYSICS: {physicsMode === 0 ? 'STATIC' : physicsMode === 1 ? 'ZERO-G' : 'EARTH-G'}
+              PHY: {physicsMode === 0 ? 'STATIC' : physicsMode === 1 ? 'ZERO-G' : 'EARTH-G'}
+            </button>
+            <button
+              onClick={() => setTerminalOpen(m => !m)}
+              className="text-[#3F3F46] hover:text-[#FAFAFA]"
+              title="Toggle Terminal (T)"
+            >
+              <Terminal size={16} />
             </button>
             <Volume2 size={16} className="text-[#3F3F46] hover:text-[#FAFAFA] cursor-pointer" onClick={playBubbleSound} />
           </div>
         </div>
 
-        {/* ACTION BAR */}
-        <div className="flex px-4 py-2 gap-4 items-center bg-[#09090B]">
-          <div className="text-[#DFE104] font-bold text-sm whitespace-nowrap">&gt; REGISTER_MATH:</div>
-          <div className="flex-grow flex bg-[#FAFAFA] text-[#09090B] font-mono text-lg h-10 border-2 border-[#3F3F46] relative">
-            <input 
-              className="w-full h-full bg-transparent outline-none px-4" 
+        {/* Action Bar */}
+        <div className="flex px-4 py-2 gap-3 items-center bg-[#09090B]">
+          <div className="text-[#DFE104] font-bold text-sm whitespace-nowrap">&gt; MATH:</div>
+          <div className="flex-grow flex bg-[#FAFAFA] text-[#09090B] font-mono text-base h-10 border-2 border-[#3F3F46]">
+            <input
+              className="w-full h-full bg-transparent outline-none px-4"
               value={mathInput}
               onChange={e => setMathInput(e.target.value)}
-              onKeyDown={e => {
-                if(e.key === 'Enter'){ playBubbleSound(); executeMath(); }
-              }}
-              placeholder="e.g. 3 + 4 * 2"
+              onKeyDown={e => { if (e.key === 'Enter') { playBubbleSound(); executeMath(); } }}
+              placeholder="e.g. 3 + 4 * 2  &#8594;  press Enter"
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-[#3F3F46] pointer-events-none uppercase">BASE-5 AWAITING</div>
           </div>
-          <button 
+          <button
             onClick={() => { playBubbleSound(); executeMath(); }}
-            className="bg-[#DFE104] text-[#09090B] font-bold uppercase h-10 px-6 border-2 border-[#FAFAFA] hover:bg-[#FAFAFA] hover:border-[#DFE104] whitespace-nowrap shadow-[2px_2px_0_0_#FAFAFA] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0_0_0_0]"
+            className="bg-[#DFE104] text-[#09090B] font-bold uppercase h-10 px-5 border-2 border-[#FAFAFA] hover:bg-[#FAFAFA] hover:border-[#DFE104] whitespace-nowrap shadow-[2px_2px_0_0_#FAFAFA] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
-            * Execute
+            &#9654; RUN
           </button>
-          <button 
-            onClick={() => { playBubbleSound(); handleAddHand(); }}
-            className="bg-[#09090B] text-[#FAFAFA] border-2 border-[#FAFAFA] h-10 px-6 font-bold uppercase hover:bg-[#3F3F46] whitespace-nowrap"
+          <button
+            onClick={() => { playBubbleSound(); spawnHand(0); }}
+            className="bg-[#09090B] text-[#FAFAFA] border-2 border-[#FAFAFA] h-10 px-4 font-bold uppercase hover:bg-[#3F3F46] whitespace-nowrap"
+            title="Add Hand (A)"
           >
-            + Add Hand
+            + Hand
           </button>
-          <button 
+          <button
             onClick={() => { playBubbleSound(); flingAll(); }}
-            className="bg-[#09090B] text-red-500 border-2 border-red-500 h-10 px-6 font-bold uppercase hover:bg-red-500 hover:text-black whitespace-nowrap"
+            className="bg-[#09090B] text-red-500 border-2 border-red-500 h-10 px-4 font-bold uppercase hover:bg-red-500 hover:text-black whitespace-nowrap"
+            title="Fling All (F)"
           >
-            âš¡ Fling All
+            &#9889; Fling
           </button>
         </div>
       </div>
 
-      {/* INSTRUCTIONS OVERLAY */}
-      <div className="absolute top-32 left-4 pointer-events-none z-10 text-[#3F3F46] text-xs font-mono uppercase leading-relaxed">
-        [ PHYSICS SIMULATION KERNEL ACTIVE ]<br/>
-        &gt; GRAB & FLING HANDS ACROSS ZERO-G BOARDS<br/>
-        &gt; CLICK HAND TO INCREMENT REGISTER (0 -&gt; 5)<br/>
-        &gt; RIGHT CLICK HAND TO TRIGGER THANOS SNAP DISINTEGRATION
+      {/* -- Instructions Overlay (bottom-left) -- */}
+      <div className="absolute bottom-16 left-4 pointer-events-none z-10 text-[#3F3F46] text-[10px] font-mono uppercase leading-loose">
+        <div>[ PHYSICS SIMULATION KERNEL ]</div>
+        <div>&gt; LEFT-CLICK &#8594; INCREMENT (0-5)</div>
+        <div>&gt; RIGHT-CLICK &#8594; THANOS SNAP</div>
+        <div>&gt; DRAG &#8594; FLING IN PHYSICS</div>
+        <div>&gt; <span className="text-[#DFE104]">A</span> ADD &nbsp; <span className="text-[#DFE104]">F</span> FLING &nbsp; <span className="text-[#DFE104]">G</span> GORE &nbsp; <span className="text-[#DFE104]">T</span> TERM</div>
       </div>
 
-      {/* RADIX OVERLAY */}
-      <div className="absolute bottom-10 right-8 pointer-events-none z-10 border border-[#3F3F46] bg-[#09090B]/80 p-4 text-right">
-        <div className="text-[#3F3F46] text-xs font-mono mb-2 uppercase">RADIX-5 DECOMPOSITION</div>
-        <div className="text-[#DFE104] font-bold mb-1">
-          IΣ = {totalBase10} =&gt; {totalBase5}(B5)
+      {/* -- Radix Decomposition (bottom-right) -- */}
+      <div className="absolute bottom-16 right-4 pointer-events-none z-10 border border-[#3F3F46] bg-[#09090B]/80 p-4 text-right">
+        <div className="text-[#3F3F46] text-xs font-mono mb-1 uppercase">RADIX-5 DECOMPOSITION</div>
+        <div className="text-[#DFE104] font-bold text-sm">
+          &#931; = {totalBase10} &#8594; {totalBase5}(B5)
         </div>
-        <div className="text-[#FAFAFA] text-xs font-mono opacity-60">
-          [P:1] = [P:4] + [P:5] ...
+        <div className="text-[#FAFAFA] text-xs font-mono opacity-50 mt-1">
+          {hands.length} register{hands.length !== 1 ? 's' : ''} active
         </div>
       </div>
 
-      {/* HANDS */}
+      {/* -- Terminal Log (collapsible) -- */}
+      {terminalOpen && (
+        <div className="absolute bottom-0 left-0 w-full z-30 bg-[#09090B] border-t-2 border-[#DFE104] pointer-events-auto" style={{ maxHeight: '160px' }}>
+          <div className="flex justify-between items-center px-4 py-1 border-b border-[#3F3F46]">
+            <span className="text-[#DFE104] text-xs font-mono uppercase">&#9654; SYS_LOG</span>
+            <button onClick={() => setTerminalOpen(false)} className="text-[#3F3F46] hover:text-[#FAFAFA] text-xs">x CLOSE</button>
+          </div>
+          <div className="overflow-y-auto font-mono text-[10px] text-[#3F3F46] px-4 py-2 space-y-0.5" style={{ maxHeight: '120px' }}>
+            {logs.map((log, i) => <div key={i} className="leading-tight">{log}</div>)}
+          </div>
+        </div>
+      )}
+
+      {/* -- Hands -- */}
       {hands.map(hand => (
         <div
           key={hand.id}
           ref={el => refMap.current[hand.id] = el}
-          className={`absolute w-[140px] h-[60px] pointer-events-auto select-none flex items-center justify-center gap-2 ${hand.snapped ? 'snapping' : ''}`}
-          onPointerDown={(e) => {
+          className={`absolute w-[140px] h-[60px] pointer-events-auto select-none flex items-center justify-center gap-1 ${hand.snapped ? 'snapping' : ''}`}
+          onPointerDown={e => {
             const body = bodyMap.current.get(hand.id);
             if (body) {
               Matter.Body.setStatic(body, true);
               grabbedRef.current = {
                 id: hand.id,
-                startX: e.clientX,
-                startY: e.clientY,
-                lastX: e.clientX,
-                lastY: e.clientY,
+                startX: e.clientX, startY: e.clientY,
+                lastX:  e.clientX, lastY:  e.clientY,
                 offsetX: e.clientX - body.position.x,
                 offsetY: e.clientY - body.position.y
               };
               e.target.setPointerCapture(e.pointerId);
             }
           }}
-          onContextMenu={(e) => { e.preventDefault(); handleHandClick(e, hand.id); }}
+          onContextMenu={e => { e.preventDefault(); snapHand(hand.id); }}
         >
-          {/* Number Tag */}
-          <div className="absolute top-0 right-0 bg-[#09090B]/80 border border-[#3F3F46] text-[#DFE104] text-[10px] font-mono px-1 rounded shadow-md pointer-events-none z-10 translate-x-2 -translate-y-2">
-            {hand.isFraction ? Number(hand.value.toFixed(3)) : hand.value}
+          {/* Value Badge */}
+          <div className="absolute top-0 right-0 bg-[#09090B]/90 border border-[#DFE104] text-[#DFE104] text-[10px] font-mono px-1 pointer-events-none z-10 translate-x-1 -translate-y-2">
+            {hand.isFraction ? getFractionString(hand.value) : hand.value}
           </div>
-          {/* Emoji / Image */}
+          {/* Emoji */}
           <div className="flex items-center justify-center filter drop-shadow-[2px_2px_0_rgba(255,255,255,0.2)] pointer-events-none">
-            {hand.isFraction ? <div className="relative flex items-center justify-center"><span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span><span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span></div> :
-             hand.value === 0 ? <span className="text-[54px]">✊</span> :
-             hand.value === 1 ? <span className="text-[54px]">☝️</span> :
-             hand.value === 2 ? <span className="text-[54px]">✌️</span> :
-             hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             <span className="text-[54px]">🖐️</span>}
+            {hand.isFraction
+              ? <div className="relative flex items-center justify-center">
+                  <span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span>
+                  <span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span>
+                </div>
+              : hand.value === 0 ? <span className="text-[54px]">✊</span>
+              : hand.value === 1 ? <span className="text-[54px]">☝️</span>
+              : hand.value === 2 ? <span className="text-[54px]">✌️</span>
+              : hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
+              : hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" />
+              : <span className="text-[54px]">🖐️</span>
+            }
           </div>
         </div>
       ))}
