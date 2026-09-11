@@ -594,8 +594,27 @@ function Workspace({ onExit }) {
       setMathGraphic({ text: `${mathInput} = ${result}`, id: Date.now() });
       setTimeout(() => setMathGraphic(null), 2500);
 
+      const NEGATIVE_TROLL = [
+        `Show me ${result} fingers. I'll wait.`,
+        'Negative fingers? Bro discovered antimatter.',
+        `${result} fingers? Are you REMOVING fingers? Call 911.`,
+        'Bold of you to assume fingers can go below zero.',
+        'Sir, this is a hand counter, not a hospital.',
+        `${result}? That's not math, that's a crime scene.`,
+        'You want NEGATIVE fingers?? Who hurt you??',
+        'I only count fingers that EXIST. Revolutionary concept.',
+        'Negative fingers have been reported to the physics police.',
+        `${result} fingers detected. Initiating concerned face: :-|`,
+      ];
+
       let target = result;
-      if (target < 0) { addLog("ERROR: Negative fingers don't exist."); target = 0; }
+      if (target < 0) {
+        addLog("ERROR: Negative fingers don't exist. Setting to 0.");
+        triggerInsult(NEGATIVE_TROLL[Math.floor(Math.random() * NEGATIVE_TROLL.length)]);
+        // Snap ALL existing hands in a dramatic rage-quit wave
+        handsRef.current.forEach((h, i) => setTimeout(() => snapHand(h.id), i * 80));
+        return;
+      }
       if (target >= 500) triggerInsult(LARGE_NUMBER_INSULTS[Math.floor(Math.random() * LARGE_NUMBER_INSULTS.length)]);
       if (target > 1000) {
         addLog('ERROR: Value exceeds node limit (1000).');
