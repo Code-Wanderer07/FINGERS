@@ -12,7 +12,7 @@ function LandingPage({ onStart }) {
       {/* Top Marquee */}
       <div className="w-full marquee-container text-xs py-1 z-10 font-mono">
         <div className="marquee-content px-4">
-          SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // BASE-5 COMPUTATIONAL ENGINE // SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // BASE-5 COMPUTATIONAL ENGINE //
+          SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE // SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE //
         </div>
       </div>
 
@@ -61,6 +61,11 @@ function LandingPage({ onStart }) {
               <div className="text-lg font-bold uppercase text-[#DFE104]">{stat.value}</div>
             </div>
           ))}
+        </div>
+
+        {/* Onboarding Tip */}
+        <div className="text-[#DFE104] font-mono text-xs mb-8 border border-[#DFE104] inline-block p-2 bg-[#09090B] animate-pulse">
+          <span className="font-bold">? HOW TO USE:</span> Left-Click to increment a hand. Right-Click to disintegrate it. Drag to fling.
         </div>
 
         {/* Action Buttons */}
@@ -286,6 +291,27 @@ function Workspace({ onExit }) {
       render.canvas.height = window.innerHeight;
       createBoundaries();
       arrangeHands();
+      
+      // Pull trapped hands back into bounds
+      if (engineRef.current) {
+        const bodies = Matter.Composite.allBodies(engineRef.current.world);
+        bodies.forEach(b => {
+          if (b.isStatic) return;
+          let newX = b.position.x;
+          let newY = b.position.y;
+          let changed = false;
+          
+          if (newX > window.innerWidth) { newX = window.innerWidth - 100; changed = true; }
+          if (newX < 0) { newX = 100; changed = true; }
+          if (newY > window.innerHeight) { newY = window.innerHeight - 100; changed = true; }
+          if (newY < 0) { newY = 100; changed = true; }
+          
+          if (changed) {
+            Matter.Body.setPosition(b, { x: newX, y: newY });
+            Matter.Body.setVelocity(b, { x: 0, y: 0 });
+          }
+        });
+      }
     };
     window.addEventListener('resize', handleResize);
 
@@ -598,6 +624,13 @@ function Workspace({ onExit }) {
 
   const executeMath = () => {
     if (!mathInput) return;
+    
+    // Security check: Limit string length to prevent ReDoS or infinite thread locks
+    if (mathInput.length > 50) {
+      addLog("SECURITY_ERROR: Expression exceeds 50 characters. Execution blocked.");
+      triggerInsult("Equation too long. I'm not reading all that.");
+      return;
+    }
     
     // Security check: Reject input that isn't purely math (XSS protection)
     if (/[^0-9\+\-\*\/\.\(\)\s]/.test(mathInput)) {

@@ -17,6 +17,9 @@ body, html, #root {
   background-color: var(--color-rich-black);
   color: var(--color-off-white);
   font-family: var(--font-sans);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 * {
