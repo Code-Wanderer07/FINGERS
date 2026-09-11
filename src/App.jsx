@@ -51,10 +51,10 @@ function LandingPage({ onStart }) {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 w-full">
           {[
-            { label: 'INPUT RADIX', value: '0..4 [BASE-5]' },
-            { label: 'PARALLELISM', value: '10 DIGITS' },
-            { label: 'CYCLE CLOCK', value: '0.002 MS' },
-            { label: 'STATE VECTOR', value: 'SYNCHRONIZED' }
+            { label: 'COUNTING METHOD', value: 'LITERAL FINGERS' },
+            { label: 'MATH SKILLS', value: 'QUESTIONABLE' },
+            { label: 'CPU TEMP', value: 'MELTING' },
+            { label: 'DIVISION BY ZERO', value: 'INSTANT DEATH' }
           ].map((stat, i) => (
             <div key={i} className="border border-[#3F3F46] p-4 bg-[#09090B]">
               <div className="text-[#3F3F46] text-xs font-mono mb-2 uppercase">{stat.label}</div>
