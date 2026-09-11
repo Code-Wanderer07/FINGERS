@@ -1,3 +1,5 @@
+<img width="1280" height="640" alt="USELESSS" src="https://github.com/user-attachments/assets/4864dded-d05a-423b-a1f0-ea89c5ed9cc7" />
+
 # FINGER++
 
 ## Basic Details
