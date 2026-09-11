@@ -862,7 +862,7 @@ function Workspace({ onExit }) {
       <div className="absolute bottom-10 right-8 pointer-events-none z-10 border border-[#3F3F46] bg-[#09090B]/80 p-4 text-right">
         <div className="text-[#3F3F46] text-xs font-mono mb-2 uppercase">RADIX-5 DECOMPOSITION</div>
         <div className="text-[#DFE104] font-bold mb-1">
-          IÎ£ = {totalBase10} =&gt; {totalBase5}(B5)
+          IΣ = {totalBase10} =&gt; {totalBase5}(B5)
         </div>
         <div className="text-[#FAFAFA] text-xs font-mono opacity-60">
           [P:1] = [P:4] + [P:5] ...
@@ -900,12 +900,12 @@ function Workspace({ onExit }) {
           {/* Emoji / Image */}
           <div className="flex items-center justify-center filter drop-shadow-[2px_2px_0_rgba(255,255,255,0.2)] pointer-events-none">
             {hand.isFraction ? <div className="relative flex items-center justify-center"><span className="text-[54px]" style={{ transform: `scale(${Math.max(0.3, Math.min(1.5, hand.value))})` }}>🩸</span><span className="absolute font-black text-white text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,1)] z-10 pointer-events-none">{getFractionString(hand.value)}</span></div> :
-             hand.value === 0 ? <span className="text-[54px]">âœŠ</span> :
-             hand.value === 1 ? <span className="text-[54px]">â˜ï¸</span> :
-             hand.value === 2 ? <span className="text-[54px]">âœŒï¸</span> :
+             hand.value === 0 ? <span className="text-[54px]">✊</span> :
+             hand.value === 1 ? <span className="text-[54px]">☝️</span> :
+             hand.value === 2 ? <span className="text-[54px]">✌️</span> :
              hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
              hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             <span className="text-[54px]">ðŸ–ï¸</span>}
+             <span className="text-[54px]">🖐️</span>}
           </div>
         </div>
       ))}
