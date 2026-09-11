@@ -57,7 +57,7 @@ function LandingPage({ onStart }) {
             { label: 'DIVISION BY ZERO', value: 'INSTANT DEATH' }
           ].map((stat, i) => (
             <div key={i} className="border border-[#3F3F46] p-4 bg-[#09090B]">
-              <div className="text-[#3F3F46] text-xs font-mono mb-2 uppercase">{stat.label}</div>
+              <div className="text-gray-400 text-xs font-mono mb-2 uppercase">{stat.label}</div>
               <div className="text-lg font-bold uppercase text-[#DFE104]">{stat.value}</div>
             </div>
           ))}
@@ -855,8 +855,8 @@ function Workspace({ onExit }) {
              hand.value === 0 ? <span className="text-[54px]">✊</span> :
              hand.value === 1 ? <span className="text-[54px]">☝️</span> :
              hand.value === 2 ? <span className="text-[54px]">✌️</span> :
-             hand.value === 3 ? <img src="/3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             hand.value === 4 ? <img src="/4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
+             hand.value === 3 ? <img src="3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
+             hand.value === 4 ? <img src="4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
              <span className="text-[54px]">🖐️</span>}
           </div>
         </div>
