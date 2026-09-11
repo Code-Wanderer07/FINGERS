@@ -66,7 +66,8 @@ npm run dev
 **For Software:**
 
 ### Screenshots
-![Dashboard/Landing Page](./screenshots/landing.png)
+![Dashboard/Landing Page]<img width="1918" height="899" alt="Screenshot 2026-09-12 045235" src="https://github.com/user-attachments/assets/0763dda5-7440-49cc-966a-3748e729954a" />
+
 *Caption: The retro-futuristic SNARK terminal landing page where the user initializes the Base-5 kernel.*
 
 ![Zero-G Simulation](./screenshots/zerog.png)
