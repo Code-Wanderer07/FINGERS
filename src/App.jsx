@@ -166,6 +166,7 @@ function Workspace({ onExit }) {
 
   const isMounted = useRef(true);
   useEffect(() => {
+    isMounted.current = true;
     return () => { isMounted.current = false; };
   }, []);
 
@@ -318,6 +319,8 @@ function Workspace({ onExit }) {
       // Clean up maps so React 18 strict mode doesn't crash on remount with stale physics bodies
       bodyMap.current.clear();
       refMap.current = {};
+      setHandsState([]);
+      handsRef.current = [];
     };
   }, []);
 
@@ -430,34 +433,30 @@ function Workspace({ onExit }) {
       const idx = prev.findIndex(h => h.id === id);
       if (idx === -1) return prev;
       
+      const hand = prev[idx];
+      if (hand.snapped) return prev; // Prevent race conditions on already dying hands
+      
       const newHands = [...prev];
-      const hand = newHands[idx];
+      const updatedHand = { ...hand }; // Correct React state immutability
       
-      // If fraction, click upgrades it to whole number 1
-      if (hand.isFraction) {
-        hand.value = 1;
-        hand.isFraction = false;
+      if (updatedHand.isFraction) {
+        updatedHand.value = 1;
+        updatedHand.isFraction = false;
         addLog(`MOD_NODE: Converted fraction node into whole integer 1.`);
-        return newHands;
-      }
-      
-      const nextVal = hand.value + 1;
-      if (nextVal > 4) {
-        snapHand(id);
-        const engine = engineRef.current;
-        if (engine) {
-          const body = bodyMap.current.get(id);
-          if (body) {
-            Matter.Composite.remove(engine.world, body);
-          }
-        }
       } else {
-        hand.value = nextVal;
+        let nextVal = updatedHand.value + 1;
+        // Cycle back to 0 instead of breaking the hand
+        if (nextVal > 5) {
+          nextVal = 0;
+        }
+        updatedHand.value = nextVal;
         addLog(`MOD_NODE: Incremented hand to [VAL:${nextVal}]`);
       }
+      
+      newHands[idx] = updatedHand;
       return newHands;
     });
-  }, [addLog, snapHand, playBubbleSound, setHands]);
+  }, [addLog, playBubbleSound, setHands]);
 
   useEffect(() => {
     const handleGlobalMove = (e) => {
@@ -555,7 +554,7 @@ function Workspace({ onExit }) {
     if (!isMounted.current) return;
     const text = specificMessage || RAGE_BAITS[Math.floor(Math.random() * RAGE_BAITS.length)];
     const newInsult = {
-      id: Date.now(),
+      id: Date.now() + Math.random(),
       text,
       x: 20 + Math.random() * 60, // 20% to 80% screen width
       y: 20 + Math.random() * 60  // 20% to 80% screen height
@@ -856,8 +855,8 @@ function Workspace({ onExit }) {
              hand.value === 0 ? <span className="text-[54px]">✊</span> :
              hand.value === 1 ? <span className="text-[54px]">☝️</span> :
              hand.value === 2 ? <span className="text-[54px]">✌️</span> :
-             hand.value === 3 ? <img src="/3.png" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
-             hand.value === 4 ? <img src="/4.png" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
+             hand.value === 3 ? <img src="/3.png" alt="3" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
+             hand.value === 4 ? <img src="/4.png" alt="4" className="w-16 h-16 object-contain drop-shadow-md scale-125" draggable="false" /> :
              <span className="text-[54px]">🖐️</span>}
           </div>
         </div>
