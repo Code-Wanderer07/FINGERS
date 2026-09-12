@@ -23,7 +23,7 @@ const getFractionString = (decimal) => {
 function LandingPage({ onStart }) {
   const MARQUEE_TEXT = 'SHATTER BIOLOGICAL LIMITS // DYNAMIC REGISTER PHYSICS // FINGERS++ /// FINGERS++ // QUINARY TALLY ENGINE // ';
   return (
-    <div className="w-full h-full flex flex-col bg-[#09090B] text-[#FAFAFA] font-['Space_Grotesk'] relative overflow-hidden grid-bg">
+    <div className="w-full h-full flex flex-col bg-rich-black text-off-white font-['Space_Grotesk'] relative overflow-hidden grid-bg">
 
       {/* Top Marquee - text duplicated for seamless looping */}
       <div className="w-full marquee-container text-xs py-1 z-10 font-mono">
@@ -35,15 +35,15 @@ function LandingPage({ onStart }) {
       {/* Header */}
       <div className="w-full flex justify-between items-center p-6 z-20">
         <div className="flex items-center gap-3 font-bold text-2xl tracking-tighter">
-          <div className="bg-[#DFE104] text-[#09090B] w-8 h-8 flex items-center justify-center text-xl">5</div>
+          <div className="bg-acid-yellow text-rich-black w-8 h-8 flex items-center justify-center text-xl">5</div>
           FINGERS++
         </div>
-        <div className="flex items-center gap-6 font-mono text-xs text-[#3F3F46]">
+        <div className="flex items-center gap-6 font-mono text-xs text-zinc-700">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#3F3F46]"></span>
-            KERNEL: <span className="text-[#FAFAFA] ml-1">B5_STABLE</span>
+            <span className="w-2 h-2 bg-zinc-700"></span>
+            KERNEL: <span className="text-off-white ml-1">B5_STABLE</span>
           </div>
-          <div className="border border-[#DFE104] text-[#DFE104] px-3 py-1">RADIX: B5</div>
+          <div className="border border-acid-yellow text-acid-yellow px-3 py-1">RADIX: B5</div>
         </div>
       </div>
 
@@ -51,16 +51,16 @@ function LandingPage({ onStart }) {
       <div className="flex-1 flex flex-col items-center justify-center z-20 w-full max-w-4xl mx-auto px-4 mt-[-50px]">
 
         {/* System ID Badge */}
-        <div className="border border-[#3F3F46] bg-[#09090B] px-6 py-2 mb-8 font-mono text-xs flex items-center gap-3 uppercase">
-          <span className="text-[#DFE104]">&#9654;</span>
-          [ SYSTEM ID: FINGERS_V2.0 ] //<span className="text-[#DFE104] ml-2">MEM: 5^10 BYTES</span>
+        <div className="border border-zinc-700 bg-rich-black px-6 py-2 mb-8 font-mono text-xs flex items-center gap-3 uppercase">
+          <span className="text-acid-yellow">&#9654;</span>
+          [ SYSTEM ID: FINGERS_V2.0 ] //<span className="text-acid-yellow ml-2">MEM: 5^10 BYTES</span>
         </div>
 
         {/* Hero Title */}
         <h1 className="text-8xl md:text-[140px] font-bold uppercase tracking-tighter leading-none mb-6 text-center">
-          FINGERS<span className="text-[#DFE104]">++</span>
+          FINGERS<span className="text-acid-yellow">++</span>
         </h1>
-        <h2 className="text-xl md:text-3xl font-bold uppercase text-[#FAFAFA] mb-12 text-center tracking-tight">
+        <h2 className="text-xl md:text-3xl font-bold uppercase text-off-white mb-12 text-center tracking-tight">
           Incrementing human counting beyond limits.
         </h2>
 
@@ -72,15 +72,15 @@ function LandingPage({ onStart }) {
             { label: 'CPU TEMP',        value: 'MELTING'         },
             { label: 'DIV BY ZERO',     value: 'INSTANT DEATH'   }
           ].map((stat, i) => (
-            <div key={i} className="border border-[#3F3F46] p-4 bg-[#09090B]">
+            <div key={i} className="border border-zinc-700 p-4 bg-rich-black">
               <div className="text-gray-400 text-xs font-mono mb-2 uppercase">{stat.label}</div>
-              <div className="text-lg font-bold uppercase text-[#DFE104]">{stat.value}</div>
+              <div className="text-lg font-bold uppercase text-acid-yellow">{stat.value}</div>
             </div>
           ))}
         </div>
 
         {/* Onboarding Tip */}
-        <div className="text-[#DFE104] font-mono text-xs mb-8 border border-[#DFE104] px-4 py-2 bg-[#09090B] animate-pulse text-center">
+        <div className="text-acid-yellow font-mono text-xs mb-8 border border-acid-yellow px-4 py-2 bg-rich-black animate-pulse text-center">
           <span className="font-bold">? HOW TO USE:</span>&nbsp;
           Left-Click to increment a hand &nbsp;|&nbsp; Right-Click to disintegrate it &nbsp;|&nbsp; Drag to fling
         </div>
@@ -89,30 +89,30 @@ function LandingPage({ onStart }) {
         <div className="flex flex-col md:flex-row gap-6 items-center mb-12">
           <button
             onClick={onStart}
-            className="bg-[#DFE104] text-[#09090B] font-bold uppercase text-lg px-8 py-4 border-2 border-[#FAFAFA] flex flex-col items-center shadow-[4px_4px_0_0_#FAFAFA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            className="bg-acid-yellow text-rich-black font-bold uppercase text-lg px-8 py-4 border-2 border-off-white flex flex-col items-center shadow-[4px_4px_0_0_#FAFAFA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
           >
             <span>INITIALIZE</span>
             <span>WORKSPACE <span className="ml-2 font-normal">&#8594;</span></span>
             <span className="text-xs font-mono mt-1">[CANVAS.HTML]</span>
           </button>
-          <div className="flex flex-col gap-2 text-xs font-mono text-[#3F3F46] border border-[#3F3F46] p-4 bg-[#09090B]">
-            <div><span className="text-[#DFE104]">A</span> - Add Hand</div>
-            <div><span className="text-[#DFE104]">F</span> - Fling All</div>
-            <div><span className="text-[#DFE104]">G</span> - Gore Mode</div>
-            <div><span className="text-[#DFE104]">P</span> - Physics Mode</div>
+          <div className="flex flex-col gap-2 text-xs font-mono text-zinc-700 border border-zinc-700 p-4 bg-rich-black">
+            <div><span className="text-acid-yellow">A</span> - Add Hand</div>
+            <div><span className="text-acid-yellow">F</span> - Fling All</div>
+            <div><span className="text-acid-yellow">G</span> - Gore Mode</div>
+            <div><span className="text-acid-yellow">P</span> - Physics Mode</div>
           </div>
         </div>
 
         {/* Code Snippet Box */}
-        <div className="w-full border border-[#3F3F46] bg-[#09090B]/80 p-6 relative">
-          <div className="flex justify-between items-center border-b border-[#3F3F46] pb-4 mb-4 font-mono text-xs text-[#3F3F46] uppercase">
+        <div className="w-full border border-zinc-700 bg-rich-black/80 p-6 relative">
+          <div className="flex justify-between items-center border-b border-zinc-700 pb-4 mb-4 font-mono text-xs text-zinc-700 uppercase">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#DFE104]"></span>
+              <span className="w-2 h-2 bg-acid-yellow"></span>
               B5_CORE_INTERPRETER.asm
             </div>
             <div>MODE: RAW_REGISTER</div>
           </div>
-          <div className="font-mono text-xs md:text-sm text-[#DFE104] leading-relaxed uppercase">
+          <div className="font-mono text-xs md:text-sm text-acid-yellow leading-relaxed uppercase">
             <div className="mb-2"><span className="opacity-50">0x00:</span> LOAD_FINGER_MAP [THUMB..PINKY] -&gt; REG_B5_ALPHA</div>
             <div className="mb-2"><span className="opacity-50">0x04:</span> INC_RADIX_5 OVERFLOW_CASCADE -&gt; NEXT_HAND_BUS</div>
             <div><span className="opacity-50">0x08:</span> SHATTER_BIO_CEILING: 5^10 = 9,765,625 RESOLVED IN REALTIME</div>
@@ -121,26 +121,26 @@ function LandingPage({ onStart }) {
       </div>
 
       {/* Footer Status Bar */}
-      <div className="w-full border-t border-[#3F3F46] p-4 flex flex-col md:flex-row justify-between items-center z-20 bg-[#09090B] font-mono text-[10px] uppercase gap-4">
-        <div className="flex flex-wrap items-center gap-4 text-[#3F3F46]">
+      <div className="w-full border-t border-zinc-700 p-4 flex flex-col md:flex-row justify-between items-center z-20 bg-rich-black font-mono text-[10px] uppercase gap-4">
+        <div className="flex flex-wrap items-center gap-4 text-zinc-700">
           <div className="flex items-center gap-2 font-bold">
-            <span className="w-2 h-2 bg-[#DFE104]"></span>
-            <span className="text-[#FAFAFA]">SYSTEM STATUS: ONLINE // BASE-5 KERNEL</span>
+            <span className="w-2 h-2 bg-acid-yellow"></span>
+            <span className="text-off-white">SYSTEM STATUS: ONLINE // BASE-5 KERNEL</span>
           </div>
           <div>|</div>
           <div>SYS_REV: #2026.04-STABLE</div>
           <div>|</div>
-          <div className="text-[#DFE104]">LATENCY: 0.12MS</div>
+          <div className="text-acid-yellow">LATENCY: 0.12MS</div>
         </div>
-        <div className="text-[#3F3F46]">
-          ARCHITECTS: <span className="text-[#FAFAFA]">GEOWON &amp; SHIVAKANTH</span>
+        <div className="text-zinc-700">
+          ARCHITECTS: <span className="text-off-white">GEOWON &amp; SHIVAKANTH</span>
         </div>
       </div>
 
       {/* Bottom Copyright */}
-      <div className="w-full flex justify-between items-center px-4 py-2 font-mono text-[8px] text-[#3F3F46] uppercase z-20">
+      <div className="w-full flex justify-between items-center px-4 py-2 font-mono text-[8px] text-zinc-700 uppercase z-20">
         <div>(C) 2026 FINGERS++ ALL REGISTERS ALLOCATED. NO RIGHTS RESERVED.</div>
-        <div className="text-[#DFE104]">ALL RADIANS QUANTIZED TO BASE-5</div>
+        <div className="text-acid-yellow">ALL RADIANS QUANTIZED TO BASE-5</div>
       </div>
     </div>
   );
@@ -681,7 +681,7 @@ function Workspace({ onExit }) {
 
   // -- Render -----------------------------------------------------------------
   return (
-    <div className="w-full h-full bg-[#09090B] font-['Space_Grotesk'] overflow-hidden relative grid-bg">
+    <div className="w-full h-full bg-rich-black font-['Space_Grotesk'] overflow-hidden relative grid-bg">
       {/* Physics Canvas */}
       <div className="absolute inset-0 pointer-events-none" ref={sceneRef} />
 
@@ -699,66 +699,66 @@ function Workspace({ onExit }) {
       {/* -- Math Flash Overlay -- */}
       {mathGraphic && (
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center px-8">
-          <div className="text-[#DFE104] font-mono text-4xl md:text-7xl font-bold opacity-0 animate-math-flash text-center drop-shadow-[0_0_20px_rgba(223,225,4,0.8)] break-all">
+          <div className="text-acid-yellow font-mono text-4xl md:text-7xl font-bold opacity-0 animate-math-flash text-center drop-shadow-[0_0_20px_rgba(223,225,4,0.8)] break-all">
             {mathGraphic.text}
           </div>
         </div>
       )}
 
       {/* -- Header Bar -- */}
-      <div className="absolute top-0 left-0 w-full z-40 bg-[#09090B] border-b-2 border-[#3F3F46] pointer-events-auto">
+      <div className="absolute top-0 left-0 w-full z-40 bg-rich-black border-b-2 border-zinc-700 pointer-events-auto">
         {/* Top Row */}
-        <div className="flex justify-between items-center px-4 py-2 border-b border-[#3F3F46]">
+        <div className="flex justify-between items-center px-4 py-2 border-b border-zinc-700">
           <div className="flex gap-4 items-center">
             <button
               onClick={() => { playBubbleSound(); onExit && onExit(); }}
-              className="border border-[#3F3F46] px-3 py-1 text-xs hover:bg-[#FAFAFA] hover:text-[#09090B] uppercase"
+              className="border border-zinc-700 px-3 py-1 text-xs hover:bg-off-white hover:text-rich-black uppercase"
             >
               &lt; Exit
             </button>
             <div className="flex items-center gap-2 font-bold text-sm">
-              <span className="w-3 h-3 bg-[#DFE104]"></span>
-              FINGERS++ <span className="text-[#3F3F46] text-xs font-normal">KERNEL::OS_REALTIME</span>
+              <span className="w-3 h-3 bg-acid-yellow"></span>
+              FINGERS++ <span className="text-zinc-700 text-xs font-normal">KERNEL::OS_REALTIME</span>
             </div>
           </div>
           <div className="flex items-center gap-6">
-            <div className="text-xs uppercase text-[#3F3F46] font-bold">
-              NODES: <span className="text-[#DFE104] text-sm">{hands.length}</span>
+            <div className="text-xs uppercase text-zinc-700 font-bold">
+              NODES: <span className="text-acid-yellow text-sm">{hands.length}</span>
             </div>
-            <div className="text-xs uppercase text-[#3F3F46] font-bold">
-              TOTAL: <span className="text-[#FAFAFA] text-sm">{totalBase10}</span>
-              <span className="text-[#DFE104] ml-2">{totalBase5}(B5)</span>
+            <div className="text-xs uppercase text-zinc-700 font-bold">
+              TOTAL: <span className="text-off-white text-sm">{totalBase10}</span>
+              <span className="text-acid-yellow ml-2">{totalBase5}(B5)</span>
             </div>
           </div>
           <div className="flex items-center gap-4 text-xs font-bold uppercase">
             <button
               onClick={() => { playBubbleSound(); setGoreMode(m => !m); }}
-              className={`flex items-center gap-2 border px-2 py-1 transition-colors ${goreMode ? 'border-red-500 text-red-500' : 'border-[#3F3F46] text-[#3F3F46] hover:text-[#FAFAFA]'}`}
+              className={`flex items-center gap-2 border px-2 py-1 transition-colors ${goreMode ? 'border-red-500 text-red-500' : 'border-zinc-700 text-zinc-700 hover:text-off-white'}`}
             >
-              <span className={`w-2 h-2 ${goreMode ? 'bg-red-500' : 'bg-[#3F3F46]'}`}></span>
+              <span className={`w-2 h-2 ${goreMode ? 'bg-red-500' : 'bg-zinc-700'}`}></span>
               GORE {goreMode ? 'ON' : 'OFF'}
             </button>
             <button
               onClick={() => { playBubbleSound(); togglePhysics(); }}
-              className="text-[#DFE104] hover:text-[#FAFAFA] flex items-center gap-1"
+              className="text-acid-yellow hover:text-off-white flex items-center gap-1"
             >
               PHY: {physicsMode === 0 ? 'STATIC' : physicsMode === 1 ? 'ZERO-G' : 'EARTH-G'}
             </button>
             <button
               onClick={() => setTerminalOpen(m => !m)}
-              className="text-[#3F3F46] hover:text-[#FAFAFA]"
+              className="text-zinc-700 hover:text-off-white"
               title="Toggle Terminal (T)"
             >
               <Terminal size={16} />
             </button>
-            <Volume2 size={16} className="text-[#3F3F46] hover:text-[#FAFAFA] cursor-pointer" onClick={playBubbleSound} />
+            <Volume2 size={16} className="text-zinc-700 hover:text-off-white cursor-pointer" onClick={playBubbleSound} />
           </div>
         </div>
 
         {/* Action Bar */}
-        <div className="flex px-4 py-2 gap-3 items-center bg-[#09090B]">
-          <div className="text-[#DFE104] font-bold text-sm whitespace-nowrap">&gt; MATH:</div>
-          <div className="flex-grow flex bg-[#FAFAFA] text-[#09090B] font-mono text-base h-10 border-2 border-[#3F3F46]">
+        <div className="flex px-4 py-2 gap-3 items-center bg-rich-black">
+          <div className="text-acid-yellow font-bold text-sm whitespace-nowrap">&gt; MATH:</div>
+          <div className="flex-grow flex bg-off-white text-rich-black font-mono text-base h-10 border-2 border-zinc-700">
             <input
               className="w-full h-full bg-transparent outline-none px-4"
               value={mathInput}
@@ -769,20 +769,20 @@ function Workspace({ onExit }) {
           </div>
           <button
             onClick={() => { playBubbleSound(); executeMath(); }}
-            className="bg-[#DFE104] text-[#09090B] font-bold uppercase h-10 px-5 border-2 border-[#FAFAFA] hover:bg-[#FAFAFA] hover:border-[#DFE104] whitespace-nowrap shadow-[2px_2px_0_0_#FAFAFA] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            className="bg-acid-yellow text-rich-black font-bold uppercase h-10 px-5 border-2 border-off-white hover:bg-off-white hover:border-acid-yellow whitespace-nowrap shadow-[2px_2px_0_0_#FAFAFA] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
             &#9654; RUN
           </button>
           <button
             onClick={() => { playBubbleSound(); spawnHand(0); }}
-            className="bg-[#09090B] text-[#FAFAFA] border-2 border-[#FAFAFA] h-10 px-4 font-bold uppercase hover:bg-[#3F3F46] whitespace-nowrap"
+            className="bg-rich-black text-off-white border-2 border-off-white h-10 px-4 font-bold uppercase hover:bg-zinc-700 whitespace-nowrap"
             title="Add Hand (A)"
           >
             + Hand
           </button>
           <button
             onClick={() => { playBubbleSound(); flingAll(); }}
-            className="bg-[#09090B] text-red-500 border-2 border-red-500 h-10 px-4 font-bold uppercase hover:bg-red-500 hover:text-black whitespace-nowrap"
+            className="bg-rich-black text-red-500 border-2 border-red-500 h-10 px-4 font-bold uppercase hover:bg-red-500 hover:text-black whitespace-nowrap"
             title="Fling All (F)"
           >
             &#9889; Fling
@@ -791,33 +791,33 @@ function Workspace({ onExit }) {
       </div>
 
       {/* -- Instructions Overlay (bottom-left) -- */}
-      <div className="absolute bottom-16 left-4 pointer-events-none z-10 text-[#3F3F46] text-[10px] font-mono uppercase leading-loose">
+      <div className="absolute bottom-16 left-4 pointer-events-none z-10 text-zinc-700 text-[10px] font-mono uppercase leading-loose">
         <div>[ PHYSICS SIMULATION KERNEL ]</div>
         <div>&gt; LEFT-CLICK &#8594; INCREMENT (0-5)</div>
         <div>&gt; RIGHT-CLICK &#8594; THANOS SNAP</div>
         <div>&gt; DRAG &#8594; FLING IN PHYSICS</div>
-        <div>&gt; <span className="text-[#DFE104]">A</span> ADD &nbsp; <span className="text-[#DFE104]">F</span> FLING &nbsp; <span className="text-[#DFE104]">G</span> GORE &nbsp; <span className="text-[#DFE104]">T</span> TERM</div>
+        <div>&gt; <span className="text-acid-yellow">A</span> ADD &nbsp; <span className="text-acid-yellow">F</span> FLING &nbsp; <span className="text-acid-yellow">G</span> GORE &nbsp; <span className="text-acid-yellow">T</span> TERM</div>
       </div>
 
       {/* -- Radix Decomposition (bottom-right) -- */}
-      <div className="absolute bottom-16 right-4 pointer-events-none z-10 border border-[#3F3F46] bg-[#09090B]/80 p-4 text-right">
-        <div className="text-[#3F3F46] text-xs font-mono mb-1 uppercase">RADIX-5 DECOMPOSITION</div>
-        <div className="text-[#DFE104] font-bold text-sm">
+      <div className="absolute bottom-16 right-4 pointer-events-none z-10 border border-zinc-700 bg-rich-black/80 p-4 text-right">
+        <div className="text-zinc-700 text-xs font-mono mb-1 uppercase">RADIX-5 DECOMPOSITION</div>
+        <div className="text-acid-yellow font-bold text-sm">
           &#931; = {totalBase10} &#8594; {totalBase5}(B5)
         </div>
-        <div className="text-[#FAFAFA] text-xs font-mono opacity-50 mt-1">
+        <div className="text-off-white text-xs font-mono opacity-50 mt-1">
           {hands.length} register{hands.length !== 1 ? 's' : ''} active
         </div>
       </div>
 
       {/* -- Terminal Log (collapsible) -- */}
       {terminalOpen && (
-        <div className="absolute bottom-0 left-0 w-full z-30 bg-[#09090B] border-t-2 border-[#DFE104] pointer-events-auto" style={{ maxHeight: '160px' }}>
-          <div className="flex justify-between items-center px-4 py-1 border-b border-[#3F3F46]">
-            <span className="text-[#DFE104] text-xs font-mono uppercase">&#9654; SYS_LOG</span>
-            <button onClick={() => setTerminalOpen(false)} className="text-[#3F3F46] hover:text-[#FAFAFA] text-xs">x CLOSE</button>
+        <div className="absolute bottom-0 left-0 w-full z-30 bg-rich-black border-t-2 border-acid-yellow pointer-events-auto" style={{ maxHeight: '160px' }}>
+          <div className="flex justify-between items-center px-4 py-1 border-b border-zinc-700">
+            <span className="text-acid-yellow text-xs font-mono uppercase">&#9654; SYS_LOG</span>
+            <button onClick={() => setTerminalOpen(false)} className="text-zinc-700 hover:text-off-white text-xs">x CLOSE</button>
           </div>
-          <div className="overflow-y-auto font-mono text-[10px] text-[#3F3F46] px-4 py-2 space-y-0.5" style={{ maxHeight: '120px' }}>
+          <div className="overflow-y-auto font-mono text-[10px] text-zinc-700 px-4 py-2 space-y-0.5" style={{ maxHeight: '120px' }}>
             {logs.map((log, i) => <div key={i} className="leading-tight">{log}</div>)}
           </div>
         </div>
@@ -858,7 +858,7 @@ function Workspace({ onExit }) {
             {/* Inner div: visual content + animation class — isolated from JS transform */}
             <div className={`w-full h-full flex items-center justify-center gap-1 relative ${hand.snapped ? 'snapping' : ''}`}>
               {/* Value Badge - cumulative counter */}
-              <div className="absolute top-0 right-0 bg-[#09090B]/90 border border-[#DFE104] text-[#DFE104] text-[10px] font-mono px-1 pointer-events-none z-10 translate-x-1 -translate-y-2">
+              <div className="absolute top-0 right-0 bg-rich-black/90 border border-acid-yellow text-acid-yellow text-[10px] font-mono px-1 pointer-events-none z-10 translate-x-1 -translate-y-2">
                 {badgeLabel}
               </div>
               {/* Emoji / Image */}
