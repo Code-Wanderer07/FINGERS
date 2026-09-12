@@ -101,13 +101,6 @@ function LandingPage({ onStart }) {
             <div><span className="text-[#DFE104]">G</span> - Gore Mode</div>
             <div><span className="text-[#DFE104]">P</span> - Physics Mode</div>
           </div>
-          <a
-            href="journal.html"
-            className="bg-[#09090B] text-[#FAFAFA] font-bold uppercase text-sm px-6 py-4 border-2 border-[#3F3F46] flex flex-col items-center hover:border-[#DFE104] hover:text-[#DFE104] transition-colors"
-          >
-            <span>READ DEVELOPER</span>
-            <span>JOURNAL</span>
-          </a>
         </div>
 
         {/* Code Snippet Box */}
