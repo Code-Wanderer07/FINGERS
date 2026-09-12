@@ -75,9 +75,7 @@ npm run dev
 *Caption: Dozens of interactive hands floating in the Zero-G physics workspace after a large mathematical evaluation.*
 
 
-### Diagrams
-![Workflow](./screenshots/workflow.png)
-*Caption: The architecture bridging React's virtual DOM state (`handsRef`) with Matter.js's continuous 60FPS physics engine (`bodyMap`), utilizing a custom `requestAnimationFrame` synchronization loop.*
+
 
 **For Hardware:**
 *(Not applicable for this project)*
