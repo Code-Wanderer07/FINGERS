@@ -88,7 +88,7 @@ npm run dev
 ## Project Demo
 
 ### Video
-[Link to YouTube / Loom Demo Video]
+https://drive.google.com/file/d/1xBlSzgJbBvGIu__lC6kG7kOzrm_jzBDy/view?usp=drive_link
 *Caption: This video demonstrates the core features of FINGERS++: typing equations into the terminal, dragging hands with real-time momentum, activating Gore Mode, and watching the staggered Thanos-snap deletion effect during subtraction.*
 
 ### Additional Demos
