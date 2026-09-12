@@ -70,15 +70,12 @@ npm run dev
 
 *Caption: The retro-futuristic SNARK terminal landing page where the user initializes the Base-5 kernel.*
 
-![Zero-G Simulation](./screenshots/zerog.png)
+![Zero-G Simulation]<img width="1920" height="1020" alt="Screenshot 2026-09-12 020933" src="https://github.com/user-attachments/assets/56559e3c-1d2e-4a3b-a015-1ffd4665c889" />
+
 *Caption: Dozens of interactive hands floating in the Zero-G physics workspace after a large mathematical evaluation.*
 
-![Thanos Snap Deletion](./screenshots/snap.png)
-*Caption: The staggered "Thanos Snap" disintegration sequence triggering during a division/subtraction calculation.*
 
-### Diagrams
-![Workflow](./screenshots/workflow.png)
-*Caption: The architecture bridging React's virtual DOM state (`handsRef`) with Matter.js's continuous 60FPS physics engine (`bodyMap`), utilizing a custom `requestAnimationFrame` synchronization loop.*
+
 
 **For Hardware:**
 *(Not applicable for this project)*
@@ -88,7 +85,7 @@ npm run dev
 ## Project Demo
 
 ### Video
-[Link to YouTube / Loom Demo Video]
+https://drive.google.com/file/d/1xBlSzgJbBvGIu__lC6kG7kOzrm_jzBDy/view?usp=drive_link
 *Caption: This video demonstrates the core features of FINGERS++: typing equations into the terminal, dragging hands with real-time momentum, activating Gore Mode, and watching the staggered Thanos-snap deletion effect during subtraction.*
 
 ### Additional Demos
